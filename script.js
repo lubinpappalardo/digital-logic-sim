@@ -142,7 +142,7 @@ let diagram = {};
 
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-   alert("Looks like your are using a mobile device ! Unfortunately, this website was designed for pc and laptop use only. Indeed, you won't ne able to use it properly on your current device.");
+   alert("Looks like your are using a mobile device ! Unfortunately, this website was designed for pc and laptop use only. Indeed, you won't be able to use it properly on your current device.");
 }
 
 
@@ -169,10 +169,10 @@ $(document).on('mouseup', function (e) {
 
 $(document).on('mousemove', function (e) {
   if (IsDraggingBoard) {
-    var x = e.pageX;
-    var y = e.pageY;
-    var distanceX = x - BoardDraggingStartCoordinates.x;
-    var distanceY = y - BoardDraggingStartCoordinates.y;
+    const x = e.pageX;
+    const y = e.pageY;
+    const distanceX = x - BoardDraggingStartCoordinates.x;
+    const distanceY = y - BoardDraggingStartCoordinates.y;
     BoardDraggingDistance = {
       x: BoardLastDraggingDistance.x + distanceX, 
       y: BoardLastDraggingDistance.y + distanceY, 
@@ -227,7 +227,7 @@ function resetWorkspace() {
 function setDiagram() {
   
   $('.component').each(function() {
-    const id = this.id;
+    const { id } = this;
     if (diagram[id] != undefined) {
       return;
     }

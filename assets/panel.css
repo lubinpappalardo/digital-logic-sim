@@ -1,0 +1,417 @@
+/* ---- ---- ---- PANEL ---- ---- ---- */
+
+.panel {
+    position: fixed;
+    overflow-x: hidden;
+    left: 0;
+    height: 100%;
+    width: var(--panelSize);
+    z-index: 8888;
+  
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    
+    background: var(--backgroundLight);
+    border: 2px solid var(--tile);
+  
+    color: var(--text);
+  }
+  
+  /* --- Panel section title --- */
+  
+  .section-title {
+    position: relative;
+    z-index: -2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .section-title h2 {
+    background-color: var(--backgroundLight);
+    padding: 5px;
+    margin: 0;
+  }
+  
+  .section-title::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg, 
+      var(--backgroundLight) 0%, 
+      var(--tileLight) 30%, 
+      var(--tileLight) 70%, 
+      var(--backgroundLight) 100%
+    );
+  }
+  
+  /* --- Panel buttons --- */
+  
+  .panel button, #loadfile-btn {
+    position: relative;
+    background-color: var(--secondary);
+    border: none;
+    border-radius: 12px;
+    padding: 8px 12px;
+    transition: background-color .5s;
+  }
+  
+  #loadfile-btn.file-selected {
+    background-color: var(--accent);
+  }
+  
+  .panel button::before, #loadfile-btn::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: var(--secondaryLight);
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 1s;
+  }
+  
+  .panel button.danger-btn::before {
+    background-color: var(--primary);
+  }
+  
+  .panel button:hover, #loadfile-btn:hover {
+    background-color: var(--secondaryLight);
+  }
+  
+  .panel button:hover::before, #loadfile-btn:hover::before {
+    opacity: 1;
+  }
+  
+  .panel button.danger-btn {
+    background-color: var(--primaryLow);
+  }
+  
+  .panel button:hover.danger-btn {
+    background-color: var(--primary);
+  }
+  
+  /* --- Sections --- */
+  
+  .panel section {
+    border-radius: 12px;
+    background-color: var(--tile);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .panel section:last-child {
+    margin-bottom: 400px;
+  }
+  
+  .panel section:not(.component-library) {
+    display: flex;
+  }
+  
+  /* Component library */
+  .component-library {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .component-library span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    border-radius: 12px;
+    font-size: var(--small);
+    transition: background-color .2s;
+    cursor: pointer;
+  }
+  
+  .component-library span:hover {
+    background-color: var(--tileLight);
+  }
+  
+  .component-library img {
+    width: 60%;
+  }
+  
+  .component-library:nth-of-type(1) img {
+    width: 40%;
+  }
+  
+  /* Save */
+  
+  .save-project {
+    position: relative;
+    --padding: 10px;
+    padding: var(--padding);
+    gap: var(--padding);
+  }
+  
+  .save-project input {
+    outline: none;
+    background-color: var(--background);
+    border: 2px solid var(--tileLight);
+    border-radius: 12px;
+    padding: 12px 16px;
+    width: 100%;
+  }
+  
+  .save-project input.not-valid {
+    border-color: var(--warning);
+  }
+  
+  .save-project:has(input.not-valid)::before {
+    content: "Name not valid";
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: var(--padding);
+    font-size: var(--small);
+    color: var(--warning);
+    transform: translateY(-50%);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(5px);
+  }
+  
+  .save-project button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  /* Load file */
+  .load-file {
+    padding: 10px;
+    gap: 20px;
+  }
+  
+  #loadfile-btn { cursor: pointer; }
+  
+  #loadfile-btn span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .load-file input {
+    display: none;
+  }
+  
+  /* Clock options */
+  
+  .clock-options {
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .clock-options div {
+    min-width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 12px;
+    font-size: var(--small);
+    transition: background-color .2s;
+    cursor: pointer;
+  }
+  
+  .clock-options .google-icon {
+    font-size: var(--title);
+  }
+  
+  .stop-play-alt {
+    font-size: var(--small);
+  }
+  
+  .clock-options div:hover {
+    background-color: var(--tileLight);
+  }
+  
+  #pulseBtn.animate-pulse {
+    animation: pulse 0.5s ease-in-out;
+  }
+  
+  @keyframes pulse {
+    0% {scale: 1}
+    50% {scale: 1.1}
+    90% {scale: 0.95}
+    100% {scale: 1}
+  }
+  
+  /* Clock frequency */
+  
+  .clock-frequency {
+    padding: 10px;
+    flex-direction: column;
+  }
+  
+  .clock-frequency > span {
+    color: var(--discreettext);
+    font-size: var(--small);
+    width: 100%;
+    padding: 6px;
+    padding-top: 0;
+  }
+  
+  .clock-frequency p {
+    margin: 0;
+    background-color: var(--backgroundLight);
+    border-radius: 12px;
+    padding: 12px 16px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .clock-frequency input {
+    display: none;
+  }
+  
+  .clock-frequency div {
+    display: flex;
+    gap: 3px;
+  }
+  
+  .clock-frequency div span {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    text-align: center;
+  
+    cursor: pointer;
+    transition: background-color .2s;
+  }
+  
+  .clock-frequency div span:hover {
+    background-color: var(--tileLight);
+  }
+  
+  .clock-frequency div span:has(input:checked) {
+    border: 2px solid var(--accent);
+  }
+  
+  
+  /* ---- ---- ---- Warning messages ---- ---- ---- */
+  
+  /* Clearing confirmation */
+  
+  #clearing-confirmation {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    justify-content: center;
+    align-items: center;
+    display: none;
+  }
+  
+  #clearing-confirmation.opened {
+    display: flex;
+  }
+  
+  #clearing-confirmation .message-box {
+    background-color: var(--backgroundLight);
+    border: 2px solid var(--tileLight);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  #clearing-confirmation .message-box div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  #clearing-confirmation .message-box div span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    
+    transition: background-color .2s;
+    cursor: pointer;
+  }
+  
+  #clearing-confirmation h1 {
+    margin: 0;
+  }
+  
+  #clearing-confirmation p {
+    color: var(--discreettext);
+  }
+  
+  #clearing-confirmation .clear-accept {
+    background-color: var(--tile);
+  }
+  
+  #clearing-confirmation .clear-accept:hover {
+    background-color: var(--tileLight);
+  }
+  
+  #clearing-confirmation .clear-deny {
+    background-color: var(--warning);
+  }
+  
+  #clearing-confirmation .clear-deny:hover {
+    background-color: var(--warningLight);
+  }
+  
+  
+  #board-saved {
+    position: absolute;
+    z-index: 9998;
+    top: calc(var(--tileSize) * 0.5);
+    right: calc(var(--tileSize) * 0.5);
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: 0px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    color: var(--tileLight);
+  }
+  
+  #board-saved.opened {
+    animation: saving 1s ease-in-out;
+  }
+  
+  @keyframes saving {
+    0% {opacity: 0;}
+    50% {opacity: 1; }
+    100% {opacity: 0; }
+  }

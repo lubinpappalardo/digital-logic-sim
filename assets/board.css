@@ -1,0 +1,358 @@
+/* ---- ---- ---- [] ---- ---- ---- */
+
+.board-container {
+    position: absolute;
+    width: var(--boardSize);
+    height: var(--boardSize);
+    scale: 1; /* needed for the zoom functionality*/
+    background-color: var(--background);
+    background-image:  linear-gradient(var(--tile) 1px, transparent 1px), linear-gradient(to right, var(--tile) 1px, var(--background) 1px);
+    background-size: var(--tileSize) var(--tileSize);
+    border: 2px solid var(--tileLight);
+    overflow: hidden;
+  }
+  
+  .board-container::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--background);
+    background: radial-gradient(circle, rgba(22,23,29,0) 68%, rgba(22,23,29,1) 100%);
+  }
+  
+  #board {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #wires {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* GLOBAL STYLE FOR COMPONENTS */
+  
+  .component {
+    position: absolute;
+    --width: calc(2 * var(--tileSize));
+    width: var(--width);
+    height: calc(6/9 * var(--width)); /* 6/9 is the ration of the image */
+    transform-origin: center;
+    /* transform: translate(-50%, -50%); */
+    top: 50%;
+    left: 50%;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 10px;
+  
+    rotate: 0deg;
+  }
+  
+  .component:hover {
+    cursor: grab;
+  }
+  
+  .component:active {
+    cursor: grabbing;
+  }
+  
+  .component::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .component:not(.switch, .light)::before {
+    position: absolute;
+    content: "";
+    z-index: -10;
+    width: 80%;
+    height: 80%;
+    border-radius: 100px;
+    background-color: var(--accent);
+    filter: blur(30px);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  
+  .component:not(.switch, .light).selected::before {
+    opacity: 1;
+  }
+  
+  /* Tooltip */
+  
+  .component .tooltip {
+    position: absolute;
+    display: none;
+    bottom: 0;
+    transform: translateY(120%);
+    border-radius: 8px;
+    padding: 4px 12px;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+  }
+  
+  .component:hover .tooltip {
+    display: flex;
+  }
+  
+  /* Pins */
+  
+  .in-pins, .out-pins {
+    position: absolute;
+    z-index: 8888;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 11px;
+  }
+  
+  .in-pins {
+    left: 0;
+    transform: translateX(-90%);
+  }
+  
+  .out-pins {
+    right: 0;
+    transform: translateX(90%);
+  }
+  
+  .pin {
+    background: var(--discreettext);
+    width: var(--pinSize);
+    height: var(--pinSize);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .pin:hover {
+    background: hsl(0, 0%, 55%);
+  }
+  
+  /* CUSTOM STYLE LOGIC GATES */
+  
+  .light, .switch {
+    overflow: visible;
+    width: 80px;
+    height: 80px;
+    background-color: var(--backgroundLight);
+    border: 2px solid var(--tileLight);
+    transition: background-color .2s, box-shadow .2s, border-color .2s;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 75%;
+  }
+  
+  .light.on, .switch.on {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 20px 0 var(--primary);
+  }
+  
+  /* pin end */
+  .switch .pin, .light .pin {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--tileLight);
+    transition: background-color .2s;
+  }
+  
+  /* pin branch */
+  .switch .pin::before, .light .pin::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    width: var(--pinDistance);
+    height: calc(var(--pinSize) * 0.5);
+    background-color: var(--tileLight);
+    transition: background-color .2s;
+  }
+  
+  .light .pin:hover, .light .pin:hover::before,
+  .switch .pin:hover, .switch .pin:hover::before {
+    background-color: var(--tileLightHover);
+  }
+  
+  .light.selected, .switch.selected {
+    border-color: var(--accent);
+  }
+  
+  .light.selected .pin, .light.selected .pin::before,
+  .switch.selected .pin, .switch.selected .pin::before {
+    background-color: var(--accent);
+  }
+  
+  /* --- Lights --- */
+  
+  .light {
+    border-radius: 50%;
+  }
+  
+  /* pin end */
+  .light .pin {
+    left: calc(var(--pinDistance) * -1);
+    transform: translateX(-59%);
+  }
+  
+  /* pin branch */
+  .light .pin::before {
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+  }
+  
+  /* --- Switches --- */
+  
+  .switch {
+    border-radius: 12px;
+    background-size: 80%;
+    background-image: url('elements/TOGGLE-OFF.svg');
+  }
+  
+  /* pin end */
+  .switch .pin {
+    right: calc(var(--pinDistance) * -1);
+    transform: translateX(59%);
+  }
+  
+  /* pin branch */
+  .switch .pin::before {
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .switch.on {
+    background-image: url('elements/TOGGLE-ON.svg');
+  }
+  
+  
+  /* Logic gates */
+  
+  .buffer::after {
+    background-image: url('elements/BUFFER.svg');
+  }
+  
+  .not::after {
+    background-image: url('elements/NOT.svg');
+  }
+  
+  .and::after {
+    background-image: url('elements/AND.svg');
+  }
+  
+  .nand::after {
+    background-image: url('elements/NAND.svg');
+  }
+  
+  .or::after {
+    background-image: url('elements/OR.svg');
+  }
+  
+  .nor::after {
+    background-image: url('elements/NOR.svg');
+  }
+  
+  .xor::after {
+    background-image: url('elements/XOR.svg');
+  }
+  
+  .xnor::after {
+    background-image: url('elements/XNOR.svg');
+  }
+  
+  /*---------------- TOOLBARS ----------------*/
+  
+  .toolbar {
+    position: fixed;
+    z-index: 8888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .toolbar span {
+    font-size: var(--title);
+    color: var(--discreettext);
+  }
+  
+  .toolbar .alt {
+    font-size: 12px;
+  }
+  
+  .toolbar button, .zoom-tools {
+    width: calc(var(--tileSize) * 1);
+    height: calc(var(--tileSize) * 1.2);
+    transition: background-color 0.5s;
+  
+    border: 2px solid var(--tileLight);
+    border-radius: 12px;
+    background: transparent;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  .toolbar button:hover, .zoom-tools span:hover {
+    background-color: var(--tileLight);
+  }
+  
+  /*---------------- SELECTION TOOLBAR ----------------*/
+  
+  .selection-tools {
+    top: calc(var(--tileSize) / 2);
+    left: calc(var(--panelSize) + var(--tileSize) / 2);
+    transition: top .5s, opacity .5s;
+  }
+  
+  .selection-tools button {
+    transform: translateY(-200%);
+    opacity: 0;
+  }
+  
+  .selection-tools button:nth-child(1) {
+    transition: background-color .5s, transform .5s, opacity .5s;
+  }
+  
+  .selection-tools button:nth-child(2) {
+    transition: background-color .5s, transform .5s .1s, opacity .5s .1s;
+  }
+  
+  body:has(.component.selected) .selection-tools button {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /*---------------- WORKSPACE TOOLBAR ----------------*/
+  
+  .workspace-tools {
+    bottom: calc(var(--tileSize) / 2);
+    right: calc(var(--tileSize) / 2);
+    flex-direction: column;
+  }
+  
+  .zoom-tools {
+    height: calc(var(--tileSize) * 2);
+  }
+  
+  .zoom-tools > span {
+    padding: 8px;
+    border-radius: 12px;
+    transition: background-color 0.2s;
+  }
