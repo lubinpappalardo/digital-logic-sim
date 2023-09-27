@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!--title and meta-->
+  <title>Digital Logic Sim</title>
+  <meta name="Digital Logic Sim">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  
+  <!--icons-->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  
+  <!--fonts-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space Grotesk">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space Mono">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair Display">
+
+  <!--style-->
+  <link rel="stylesheet" href="style.css">
+  
+  <!--script-->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="/jquery-cookies/jquery.cookie.js"></script>
+</head>
+
+<body>
+
+  <!-- ---- ---- ---- PANEL ---- ---- ---- -->
+
+  <div class='panel'>
+    
+    <h1 id='title'>Digital Logic Sim
+      <p class='version'>alpha version</p>
+    </h1>
+    <p class='author smalltext'>by <a class='smalltext' href='https://github.com/lubinpappalardo' target="_blank">Lubin Pappalardo</a></p>
+
+    <!-- ---- COMPONENTS ---- -->
+
+    <div class='section-title'><h2>COMPONENTS</h2></div>
+
+    <p class='smalltext'>
+      Click on the components to add them to the board.<br>
+      Wire 2 gates by clicking on the output and the input you wish to connect.<br>
+      Activate switches using right click.
+    </p>
+    
+    <section class='component-library'>
+
+      <span class='add-component'><img src='assets/LIGHT.svg' alt='Light'>LIGHT</span>
+      <span class='add-component'><img src='assets/SWITCH.svg' alt='Switch'>SWITCH</span>
+      
+    </section>
+
+    <section class='component-library'>
+    
+      <span class='add-component'>
+        <img src='assets/BUFFER.svg' alt='BUFFER gate'>BUFFER</span>
+      <span class='add-component'>
+        <img src='assets/NOT.svg' alt='NOT gate'>NOT</span>
+      <span class='add-component'>
+        <img src='assets/AND.svg' alt='AND gate'>AND</span>
+      <span class='add-component'>
+        <img src='assets/NAND.svg' alt='NAND gate'>NAND</span>
+      <span class='add-component'>
+        <img src='assets/OR.svg' alt='OR gate'>OR</span>
+      <span class='add-component'>
+        <img src='assets/NOR.svg' alt='NOR gate'>NOR</span>
+      <span class='add-component'>
+        <img src='assets/XOR.svg' alt='XOR gate'>XOR</span>
+      <span class='add-component'>
+        <img src='assets/XNOR.svg' alt='XNOR gate'>XNOR</span>
+  
+    </section>
+
+    <!-- ---- CLEAR ---- -->
+
+    <div class='section-title'><h2>CLEAR</h2></div>
+    
+    <button class='danger-btn' onclick="openClearingConfirmation()">Clear all</button>
+
+    <!-- ---- SAVE & LOAD ---- -->
+
+    <div class='section-title'><h2>SAVE & LOAD</h2></div>
+
+    <section class='save-project'>
+
+      <input id='filename' name='filename' type='text' placeholder="Project name">
+      <button onclick="save()"><span class="material-symbols-outlined">download</span></button>
+
+    </section>
+
+    <section class='load-file'>
+
+      <label for='loadfile' id='loadfile-btn'><span class="material-symbols-outlined">upload_file</span></label>
+      <input id='loadDiagram' name='loadfile' type='file' accept=".json">
+      <span>Upload file</span>
+      
+    </section>
+
+    <!-- ---- CLOCK OPTIONS ---- -->
+
+    <div class='section-title'><h2>CLOCK OPTIONS</h2></div>
+    
+    <p class='smalltext'>The clock corresponds to the time per second during which gates status are updated by the code</p>
+
+    <section class='clock-options'>
+      
+      <div id='pauseBtn' onclick="pauseClock()"><span class="google-icon material-symbols-outlined">stop</span><span class='stop-play-alt'>Stop</span></div>
+      <div id='pulseBtn' onclick="process()"><span class="google-icon material-symbols-outlined">skip_next</span>Pulse clock</div>
+      
+    </section>
+
+    <section class='clock-frequency'>
+      <span>Clock frequency :</span>
+      <p id='ClockFrequency'>1000 Hz</p>
+
+      <div>
+        <span onclick="$(this).find('input').prop('checked', true); changeFrequency()">
+          <input name='frequency' type='radio' value="1"><label for='frequency'>1Hz</label>
+        </span>
+        <span onclick="$(this).find('input').prop('checked', true); changeFrequency()">
+          <input name='frequency' type='radio' value="2"><label for='frequency'>2Hz</label>
+        </span>
+        <span onclick="$(this).find('input').prop('checked', true); changeFrequency()">
+          <input name='frequency' type='radio' value="10"><label for='frequency'>10Hz</label>
+        </span>
+        <span onclick="$(this).find('input').prop('checked', true); changeFrequency()">
+          <input name='frequency' type='radio' value="100" checked><label for='frequency'>100Hz</label>
+        </span>
+        <!-- <span onclick="$(this).find('input').prop('checked', true); changeFrequency()">
+          <input name='frequency' type='radio' value="1000"><label for='frequency'>1000Hz</label>
+        </span> -->
+      </div>
+      
+    </section>
+  </div>
+
+  <!-- ---- ---- ---- MSG BOX ---- ---- ---- -->
+
+  <div id='clearing-confirmation'>
+
+    <div class='message-box'>
+      <h1>Are you sure ?</h1>
+      <p>This will delete everything on your board.</p>
+      <div><span onclick='clearBoard()' class='clear-accept'>Yes, clear it</span><span onclick='closeClearingConfirmation()' class='clear-deny'>Nevermind</span></div>
+    </div>
+    
+  </div>
+
+  <span id='board-saved' class="material-symbols-outlined">
+    save
+  </span>
+
+  <!-- ---- ---- ---- TOOLBAR ---- ---- ---- -->
+
+  <div class='toolbar selection-tools'>
+    <button onclick='deleteComponent()'><span class="material-symbols-outlined">delete</span><span class='alt'>delete</span></button>
+    <button onclick='rotateComponent()'><span class="material-symbols-outlined">rotate_90_degrees_cw</span><span class='alt'>rotate</span></button>
+  </div>
+
+  <div class='toolbar workspace-tools'>
+    <div class='zoom-tools'>
+      <span onclick='ZoomIn()' class="material-symbols-outlined">zoom_in</span>
+      <span onclick='ZoomOut()' class="material-symbols-outlined">zoom_out</span>
+    </div>
+    <button onclick='resetWorkspace()'><span class="material-symbols-outlined">center_focus_strong</span><span class='alt'>reset</span></button>
+  </div>
+
+  <!-- ---- ---- ---- BOARD ---- ---- ---- -->
+  
+  <div class='board-container'>
+    
+    <div id='board' oncontextmenu="return false;">
+      <canvas id='wires'></canvas>
+  
+      <div class='components'>
+      </div>
+        
+    </div>
+    
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+
+</html>
