@@ -755,6 +755,8 @@ $(document).ready(function() {
   JsonData = JSON.parse(autosave);
   
   if (Object.keys(JsonData).length === 0) { return; }  
+
+  // console.log(autosave);
   
   loadDiagram(JsonData);
 });
