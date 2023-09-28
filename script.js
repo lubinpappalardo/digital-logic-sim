@@ -237,13 +237,13 @@ function setDiagram() {
 
     // for each output pin
     $(this).find('.out-pins').find('.pin').each(function() {
-      var name = $(this).attr('class').split(' ')[1];
+      const name = $(this).attr('class').split(' ')[1];
       diagram[id].outputs[name] = {state: 0, to: []};
     });
 
     // for each input pin
     $(this).find('.in-pins').find('.pin').each(function() {
-      var name = $(this).attr('class').split(' ')[1];
+      const name = $(this).attr('class').split(' ')[1];
       diagram[id].inputs[name] = {state: 0, from: []};
     });
   
@@ -273,11 +273,9 @@ $(document).on('mousedown', '.component', function (e) {
 
 /* unselect on click on void */
 $('#board').on('click', function (e) {
-  if (SelectedComponent !== '') {
-    if (SelectedComponent.attr('id') !== $(e.target).attr('id')) {
-      $('.selected').removeClass('selected');
-      SelectedComponent === '';
-    }
+  if (SelectedComponent !== '' && SelectedComponent.attr('id') !== $(e.target).attr('id')) {
+    $('.selected').removeClass('selected');
+    SelectedComponent === '';
   }
 });
 
@@ -339,16 +337,16 @@ $(document).on('mousemove', function (e) {
 
     const container = document.getElementById('board'); 
 
-    var x = e.pageX;
-    var y = e.pageY;
-    var containerRect = container.getBoundingClientRect();
-    var scaleX = container.offsetWidth / containerRect.width;
-    var scaleY = container.offsetHeight / containerRect.height;
-    var posX = (x - containerRect.left) * scaleX ;
-    var posY = (y - containerRect.top) * scaleY;
+    const x = e.pageX;
+    const y = e.pageY;
+    const containerRect = container.getBoundingClientRect();
+    const scaleX = container.offsetWidth / containerRect.width;
+    const scaleY = container.offsetHeight / containerRect.height;
+    let posX = (x - containerRect.left) * scaleX ;
+    let posY = (y - containerRect.top) * scaleY;
     /* center */
-    posX = posX - (DraggedComponent.width() / 2)
-    posY = posY - (DraggedComponent.height() / 2)
+    posX -= (DraggedComponent.width() / 2)
+    posY -= (DraggedComponent.height() / 2)
 
     if (posY > 0 && posY < BoardSize) {
       DraggedComponent.css('top', posY  + 'px');
@@ -367,46 +365,40 @@ $(document).on('mousemove', function (e) {
 /* ---- WIRING ---- */
 
 $(document).on('click', '.out-pins', function (e) {
-  if (!IsWiring) {
-    if ($(e.target).hasClass('pin')) {
-      WiringStartPin = $(e.target).attr('class').split(' ')[1];
-      WiringStartComponent = $(e.target).parent().parent().attr('id');
-      IsWiring = true;
-    }
-  } 
+  if (!IsWiring && $(e.target).hasClass('pin')) {
+    WiringStartPin = $(e.target).attr('class').split(' ')[1];
+    WiringStartComponent = $(e.target).parent().parent().attr('id');
+    IsWiring = true;
+  }
 });
 
 $(document).on('click', function (e) {
-  if (IsWiring) {
-    if (!$(e.target).hasClass('pin')) {
-      IsWiring = false;
-    }
-  } 
+  if (IsWiring && !$(e.target).hasClass('pin')) {
+    IsWiring = false;
+  }
 });
 
 $(document).on('click', '.in-pins', function (e) {
-  if (IsWiring) {
-    if ($(e.target).hasClass('pin')) {
-      WiringEndPin = $(e.target).attr('class').split(' ')[1];
-      WiringEndComponent = $(e.target).parent().parent().attr('id');
-      
-      const arrayToOutput = diagram[WiringStartComponent].outputs[WiringStartPin].to;
-      const arrayFromInput = diagram[WiringEndComponent].inputs[WiringEndPin].from;
-      const connectionToOutput = {component: WiringEndComponent, pin: WiringEndPin};
-      const connectionFromOutput = {component: WiringStartComponent, pin: WiringStartPin};
-      const exists = arrayToOutput.find(obj => obj.component === connectionToOutput.component && obj.pin === connectionToOutput.pin) !== undefined;
+  if (IsWiring && $(e.target).hasClass('pin')) {
+    WiringEndPin = $(e.target).attr('class').split(' ')[1];
+    WiringEndComponent = $(e.target).parent().parent().attr('id');
+    
+    const arrayToOutput = diagram[WiringStartComponent].outputs[WiringStartPin].to;
+    const arrayFromInput = diagram[WiringEndComponent].inputs[WiringEndPin].from;
+    const connectionToOutput = {component: WiringEndComponent, pin: WiringEndPin};
+    const connectionFromOutput = {component: WiringStartComponent, pin: WiringStartPin};
+    const exists = arrayToOutput.find(obj => obj.component === connectionToOutput.component && obj.pin === connectionToOutput.pin) !== undefined;
 
-      if (exists) {
-        return; // prevent from wiring two times to the same input
-      }
-      
-      arrayToOutput.push(connectionToOutput);
-      arrayFromInput.push(connectionFromOutput);
-      IsWiring = false;
-
-      autoSave();
+    if (exists) {
+      return; // prevent from wiring two times to the same input
     }
-  } 
+    
+    arrayToOutput.push(connectionToOutput);
+    arrayFromInput.push(connectionFromOutput);
+    IsWiring = false;
+
+    autoSave();
+  }
 });
 
 
@@ -419,20 +411,19 @@ const pen = paper.getContext("2d");
 function GetPinCoord(pin) {
 
   const container = document.getElementById('board'); 
-  var containerRect = container.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
   
-  var scaleX = container.offsetWidth / containerRect.width;
-  var scaleY = container.offsetHeight / containerRect.height;
+  const scaleX = container.offsetWidth / containerRect.width;
+  const scaleY = container.offsetHeight / containerRect.height;
 
   offset = pin.offset();
-  var posX = (offset.left - containerRect.left) * scaleX;
-  var posY = (offset.top - containerRect.top) * scaleY;
+  const posX = (offset.left - containerRect.left) * scaleX;
+  const posY = (offset.top - containerRect.top) * scaleY;
   
-  const coord = {
+  return {
     x: posX + pin.width() / 2,
     y: posY + pin.height() / 2
-  }
-  return coord;
+  };
 }
 
 function openClearingConfirmation() {
@@ -467,7 +458,7 @@ function draw () {
 
       const start = GetPinCoord($(`#${component}`).find(`.${output}`));
 
-      const state = diagram[component].outputs[output].state;
+      const { state } = diagram[component].outputs[output];
       if (state === 1) {
         pen.strokeStyle = wireColorOn;
       } else {
@@ -496,10 +487,10 @@ draw();
 
 /* save and load */
 
-var isValid = (function() {
- var rg1 = /^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
- var rg2 = /^\./; // cannot start with dot (.)
- var rg3 = /^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names
+const isValid = (function() {
+ const rg1 = /^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
+ const rg2 = /^\./; // cannot start with dot (.)
+ const rg3 = /^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names
  return function isValid(fname) {
    return rg1.test(fname) && !rg2.test(fname) && !rg3.test(fname);
  };
@@ -561,7 +552,7 @@ $('#loadDiagram').on('change', function(e) {
       $('#loadDiagram').val('');
       alert('Only 1 file can be accepted !');
     } else {
-      var filename = $('#loadDiagram').val().split('\\').pop().slice(0, -5);
+      const filename = $('#loadDiagram').val().split('\\').pop().slice(0, -5);
       $('#filename').val(filename);
     }
   }
@@ -573,12 +564,12 @@ $('#loadfile-btn').on('click', function(e) {
 
 /* Loading */
 $('#loadDiagram').on('change', function(e) {
-  var file = e.target.files[0];
-  var reader = new FileReader();
+  const file = e.target.files[0];
+  const reader = new FileReader();
   
   reader.onload = function(e) {
-    var content = e.target.result;
-    var JsonData = JSON.parse(content);
+    const content = e.target.result;
+    const JsonData = JSON.parse(content);
 
     loadDiagram(JsonData);
   };
@@ -596,14 +587,14 @@ function setCookie(cname, cvalue) {
 }
 
 function deleteCookies() {
-  var cookies = document.cookie.split(";");
+  const cookies = document.cookie.split(";");
 
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i];
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
     while (cookie.charAt(0) === " ") {
       cookie = cookie.substring(1);
     }
-    var cookieName = cookie.split("=")[0];
+    const cookieName = cookie.split("=")[0];
     document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
   }
 }
@@ -625,16 +616,16 @@ function getCookie(cname) {
 }
 
 function getAllCookies() {
-  var cookies = document.cookie.split(";"); // Get all cookies
+  const cookies = document.cookie.split(";"); // Get all cookies
 
-  var cookieValues = []; // Array to store cookie values
+  let cookieValues = []; // Array to store cookie values
 
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i];
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
     while (cookie.charAt(0) === " ") {
       cookie = cookie.substring(1);
     }
-    var cookieValue = cookie.split("=")[1]; // Get cookie value
+    const cookieValue = cookie.split("=")[1]; // Get cookie value
     cookieValues.push(cookieValue); // Append value to array
   }
 
@@ -647,9 +638,9 @@ function autoSave() {
     $(this).removeClass('opened');
     next();
   });
-  var str = JSON.stringify(diagram);
-  var chunks = [];
-  for (var i = 0; i < str.length; i += 2500) {
+  const str = JSON.stringify(diagram);
+  let chunks = [];
+  for (let i = 0; i < str.length; i += 2500) {
     chunks.push(str.substr(i, 2500));
   }
   for (let i = 0; i < chunks.length; i++) {
@@ -660,7 +651,7 @@ function autoSave() {
 
 $(document).ready(function() {
 
-  var autosave = getAllCookies().join("");
+  const autosave = getAllCookies().join("");
   
   if (autosave === "") { return; }
   
@@ -681,7 +672,7 @@ function loadDiagram(JsonData) {
   clearBoard();
 
   for (const component in JsonData) {
-    const type = JsonData[component].type;
+    const { type } = JsonData[component];
     const html = components[type].replace('id=\'\'', `id='${component}'`);
     $('.components').append(html);
     $(`#${component}`).css('left', JsonData[component].x)
@@ -692,8 +683,8 @@ function loadDiagram(JsonData) {
 
   diagram = JsonData;
   
-  var numberStr = ComponentCount.replace(/[^\d]/g, '');
-  var number = parseInt(numberStr);
+  const numberStr = ComponentCount.replace(/[^\d]/g, '');
+  const number = parseInt(numberStr);
   ComponentCount = number + 1;
 
   if (paused) {
@@ -832,7 +823,7 @@ function pauseClock() {
 }
 
 function changeFrequency() {
-  var value = $('input[name="frequency"]:checked').val();
+  const value = $('input[name="frequency"]:checked').val();
   $('#ClockFrequency').text(`${value} Hz  /  ${1000 / value} ms cycle`);
 
   clearInterval(clock);
