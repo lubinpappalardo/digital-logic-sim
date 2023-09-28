@@ -294,7 +294,7 @@
   .toolbar button, .zoom-tools {
     width: calc(var(--tileSize) * 1);
     height: calc(var(--tileSize) * 1.2);
-    transition: background-color 0.5s;
+    transition: background-color 0.2s;
   
     border: 2px solid var(--tileLight);
     border-radius: 12px;
@@ -309,7 +309,7 @@
     align-items: center;
   }
   
-  .toolbar button:hover, .zoom-tools span:hover {
+  .toolbar button:hover, .toolbar button.hover, .zoom-tools span:hover {
     background-color: var(--tileLight);
   }
   

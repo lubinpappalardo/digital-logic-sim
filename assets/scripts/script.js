@@ -28,6 +28,8 @@ let ComponentCount = 0;
 
 let SelectedComponent = '';
 
+let keysDown = {};
+
 const components = {
   LIGHT: `
 <div class='component light' id=''>
@@ -235,7 +237,10 @@ function setDiagram() {
     }
     
     const type = $(this).attr('class').split(' ')[1].toUpperCase();
+    // const [x, y] = mousePositionToCoordinates(0, 0, $(this));
     diagram[id] = {type: type, x: 0, y: 0, rotation: 0, inputs: {}, outputs: {}};
+    // $(this).css('top', x  + 'px');
+    // $(this).css('top', y  + 'px');
 
     // for each output pin
     $(this).find('.out-pins').find('.pin').each(function() {
@@ -303,7 +308,6 @@ function deleteComponent() {
   autoSave();
 };
 
-
 /* Rotating components */
 
 function rotateComponent() {
@@ -316,6 +320,83 @@ function rotateComponent() {
   diagram[id].rotation = angle + 90;
   autoSave();
 };
+
+
+// keyboard shortcuts
+
+$(document).keydown(function (e) {
+    if (!keysDown[e.which]) {
+        keysDown[e.which] = true;
+        // Key pressed for the first time
+        if (SelectedComponent !== '') {
+          switch (e.which) {
+            // rotate with r
+            case 82: 
+              $('#rotateComponent').addClass('hover').delay(400).queue(function(next) {
+                $(this).removeClass('hover');
+                next();
+              });
+              rotateComponent();
+              break;
+            // delete with backspace
+            case 8:
+              $('#deleteComponent').addClass('hover').delay(400).queue(function(next) {
+                $(this).removeClass('hover');
+                next();
+              });
+              deleteComponent();
+              break;
+            // activate switch with enter
+            case 13:
+              // check if the selected component is a switch
+              if (SelectedComponent.hasClass('switch')) {
+                activateSwitch(SelectedComponent);
+              }
+              break;
+            default:
+              break;
+          }
+        }
+    }
+});
+
+$(document).keyup(function (e) {
+  keysDown[e.which] = false;
+});
+
+$(document).on('keydown', function (e) {
+  if (SelectedComponent !== '') {
+    let x, y;
+    switch (e.which) {
+      // on left arrow snap move left
+      case 37:
+        x = Number(SelectedComponent.css('left').slice(0, -2)) - 10;
+        diagram[SelectedComponent.attr('id')].x = x;
+        SelectedComponent.css('left', x + 'px');
+        break;
+      // on right arrow snap move right
+      case 39:
+        x = Number(SelectedComponent.css('left').slice(0, -2)) + 10;
+        diagram[SelectedComponent.attr('id')].x = x;
+        SelectedComponent.css('left', x + 'px');
+        break;
+      // on up arrow snap move up
+      case 38:
+        y = Number(SelectedComponent.css('top').slice(0, -2)) - 10;
+        diagram[SelectedComponent.attr('id')].y = y;
+        SelectedComponent.css('top', y + 'px');
+        break;
+      // on down arrow snap move down
+      case 40:
+        y = Number(SelectedComponent.css('top').slice(0, -2)) + 10;
+        diagram[SelectedComponent.attr('id')].y = y;
+        SelectedComponent.css('top', y + 'px');
+        break;
+      default:
+        break;
+    }
+  }
+});
 
 
 /* Dragging components */
@@ -336,19 +417,10 @@ $(document).on('mouseup', '.component', function (e) {
 
 $(document).on('mousemove', function (e) {
   if (IsDraggingComponent) {
-
-    const container = document.getElementById('board'); 
-
     const x = e.pageX;
     const y = e.pageY;
-    const containerRect = container.getBoundingClientRect();
-    const scaleX = container.offsetWidth / containerRect.width;
-    const scaleY = container.offsetHeight / containerRect.height;
-    let posX = (x - containerRect.left) * scaleX ;
-    let posY = (y - containerRect.top) * scaleY;
-    /* center */
-    posX -= (DraggedComponent.width() / 2)
-    posY -= (DraggedComponent.height() / 2)
+
+    const [posX, posY] = mousePositionToCoordinates(x, y, DraggedComponent);
 
     if (posY > 0 && posY < BoardSize) {
       DraggedComponent.css('top', posY  + 'px');
@@ -358,11 +430,22 @@ $(document).on('mousemove', function (e) {
       DraggedComponent.css('left', posX + 'px');
       diagram[DraggedComponent.attr('id')].x = posX;
     }
-    
   }
 });
 
+function mousePositionToCoordinates(x, y, component) {
+  const container = document.getElementById('board'); 
+  const containerRect = container.getBoundingClientRect();
+  const scaleX = container.offsetWidth / containerRect.width;
+  const scaleY = container.offsetHeight / containerRect.height;
+  let posX = (x - containerRect.left) * scaleX ;
+  let posY = (y - containerRect.top) * scaleY;
+  /* center */
+  posX -= (component.width() / 2)
+  posY -= (component.height() / 2)
 
+  return [posX, posY];
+}
 
 /* ---- WIRING ---- */
 
@@ -714,16 +797,18 @@ function loadDiagram(JsonData) {
 /* Switches */
 $(document).on('contextmenu', '.switch', function (e) {
   if (!$(e.target).hasClass('pin')) { // prevent switch to turn on if it's the pin who has been clicked
-
-    if ($(this).hasClass('on')) {
-      $(this).removeClass('on');
-    } else {
-      $(this).addClass('on');
-    }
-    
+    activateSwitch($(this));
   }
 
 });
+
+function activateSwitch(switchComponent) {
+  if (switchComponent.hasClass('on')) {
+    switchComponent.removeClass('on');
+  } else {
+    switchComponent.addClass('on');
+  }
+} 
 
 function BUFFER(a) {
   return a;

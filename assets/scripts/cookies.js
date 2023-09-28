@@ -10,7 +10,6 @@ function closePopup() {
 
 $(document).ready(function() {
     // Make a cookie popup appear
-    console.log(getCookie('popupSeen'));
     if (getCookie('popupSeen') !== 'true') {
         const cookiesPopup = $(`
             <div id="cookies-popup">
