@@ -282,7 +282,7 @@ $(document).on('mousedown', '.component', function (e) {
 $('#board').on('click', function (e) {
   if (SelectedComponent !== '' && SelectedComponent.attr('id') !== $(e.target).attr('id')) {
     $('.selected').removeClass('selected');
-    SelectedComponent === '';
+    SelectedComponent = '';
   }
 });
 
