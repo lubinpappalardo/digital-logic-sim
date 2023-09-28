@@ -1,0 +1,41 @@
+#cookies-popup {
+    position: fixed;
+    z-index: 9999;
+    top: 10px;
+    right: 10px;
+    padding: 18px 32px;
+    max-width: 300px;
+    background-color: var(--tile);
+    opacity: 0;
+
+    transform: translateX(150%);
+    transition: transform 1s, opacity 1s;
+}
+
+#cookies-popup.visible {
+    opacity: 1;
+    transform: translateX(0%);
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: var(--discreettext);
+}
+
+#cookies-popup h2 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#cookies-popup h2 .cookie-icon {
+    color: var(--accent);
+}
+
+#cookies-popup p {
+    color: var(--discreettext);
+    font-size: 12px;
+}

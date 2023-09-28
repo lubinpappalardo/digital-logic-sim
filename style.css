@@ -2,6 +2,8 @@
 @import 'assets/panel.css';
 @import 'assets/board.css';
 
+@import 'assets/popup.css';
+
 :root {
   --background: hsl(230, 12%, 10%);
   --backgroundLight: hsl(230, 9%, 11%);

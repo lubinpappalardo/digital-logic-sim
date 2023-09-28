@@ -16,6 +16,8 @@ let clock;
 let frequency;
 let paused = false;
 
+const ignoredCookies = ['popupSeen']
+
 const rootStyles = getComputedStyle(document.documentElement);
 const wireColorOff = rootStyles.getPropertyValue('--discreettext');
 const wireColorOn = rootStyles.getPropertyValue('--primary');
@@ -594,6 +596,9 @@ function deleteCookies() {
     while (cookie.charAt(0) === " ") {
       cookie = cookie.substring(1);
     }
+    if (ignoredCookies.includes(cookie.split('=')[0])) {
+      break;
+    }
     const cookieName = cookie.split("=")[0];
     document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
   }
@@ -620,11 +625,20 @@ function getAllCookies() {
 
   let cookieValues = []; // Array to store cookie values
 
+  
+
   for (let i = 0; i < cookies.length; i++) {
+    // make sure the cookie key isn't in the ignored list
+    
     let cookie = cookies[i];
     while (cookie.charAt(0) === " ") {
       cookie = cookie.substring(1);
     }
+
+    if (ignoredCookies.includes(cookie.split('=')[0])) {
+      break;
+    }
+
     const cookieValue = cookie.split("=")[1]; // Get cookie value
     cookieValues.push(cookieValue); // Append value to array
   }
@@ -654,7 +668,7 @@ $(document).ready(function() {
   const autosave = getAllCookies().join("");
   
   if (autosave === "") { return; }
-  
+
   JsonData = JSON.parse(autosave);
   
   if (Object.keys(JsonData).length === 0) { return; }  
