@@ -60,7 +60,6 @@ $(document).on('touchend', function (e) {
   const touch = e.originalEvent.changedTouches[0];
   const endElem = document.elementFromPoint(touch.pageX, touch.pageY);
   if (IsWiring && !$(endElem).hasClass('pin')) {
-    console.log('cancel');
     IsWiring = false;
   } else if (IsWiring) {
     WiringEndPin = $(endElem).attr('class').split(' ')[1];

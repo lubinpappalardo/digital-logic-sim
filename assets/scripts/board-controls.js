@@ -7,7 +7,6 @@ let BoardLastDraggingDistance = {x: 0, y: 0};
 
 $('.board-container').on('mousedown', function (e) {
     if (!$(e.target).hasClass('component') && !IsWiring) {
-      console.log(IsWiring);
       IsDraggingBoard = true;
       BoardDraggingStartCoordinates = {
         x: e.pageX, 
