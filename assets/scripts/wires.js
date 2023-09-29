@@ -99,12 +99,21 @@ function draw () {
     if (IsWiring) {
       const container = document.getElementById('board'); 
       const containerRect = container.getBoundingClientRect();
+
+      const scaleX = container.offsetWidth / containerRect.width;
+      const scaleY = container.offsetHeight / containerRect.height;
+
+      const end = {
+        x: (WiringMouseCoords.x - containerRect.left) * scaleX,
+        y: (WiringMouseCoords.y - containerRect.top) * scaleY
+      };
+
       const WiringStartCoords = GetPinCoord($(`#${WiringStartComponent}`).find(`.${WiringStartPin}`));
 
       pen.strokeStyle = wireActive;
       pen.beginPath();
       pen.moveTo(WiringStartCoords.x, WiringStartCoords.y);
-      pen.lineTo(WiringMouseCoords.x - containerRect.left, WiringMouseCoords.y - containerRect.top);
+      pen.lineTo(end.x, end.y);
       pen.stroke();
     }
 

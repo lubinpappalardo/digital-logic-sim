@@ -34,8 +34,12 @@ $(document).on('click', '.add-component', function (e) {
     const gate = $(this).text().trim();
     const html = components[gate].replace('id=\'\'', `id='component${ComponentCount}'`);
     $('.components').append(html);
-    ComponentCount += 1;
 
+    const [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, $(`#component${ComponentCount}`));
+    $(`#component${ComponentCount}`).css('left', x + 'px');
+    $(`#component${ComponentCount}`).css('top', y + 'px');
+
+    ComponentCount += 1;
     setDiagram();
     autoSave();
 });
@@ -46,7 +50,7 @@ function deleteComponent() {
     const id = SelectedComponent.attr('id');
     delete diagram[id];
     SelectedComponent.remove();
-    playAudio('pop');
+    // playAudio('pop');
     setDiagram();
     autoSave();
 };
