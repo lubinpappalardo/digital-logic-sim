@@ -185,7 +185,15 @@ $(document).on('mousedown', '.component', function (e) {
     }
 });
 
-$(document).on('mouseup', '.component', function (e) {
+/* touch */
+$(document).on('touchstart', '.component', function (e) {
+    if (!$(e.target).hasClass('pin')) {
+        IsDraggingComponent = true;
+        DraggedComponent = $(this);
+    }
+});
+
+$(document).on('mouseup touchend', '.component', function (e) {
     IsDraggingComponent = false;
     DraggedComponent = false;
     autoSave();
@@ -196,6 +204,26 @@ $(document).on('mousemove', function (e) {
     if (IsDraggingComponent) {
         const x = e.pageX;
         const y = e.pageY;
+
+        const [posX, posY] = mousePositionToCoordinates(x, y, DraggedComponent);
+
+        if (posY > 0 && posY < BoardSize) {
+        DraggedComponent.css('top', posY  + 'px');
+        diagram[DraggedComponent.attr('id')].y = posY;
+        }
+        if (posX > 0 && posX < BoardSize) {
+        DraggedComponent.css('left', posX + 'px');
+        diagram[DraggedComponent.attr('id')].x = posX;
+        }
+    }
+});
+
+/* touch */
+$(document).on('touchmove', function (e) {
+    if (IsDraggingComponent) {
+        const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+        const x = touch.pageX;
+        const y = touch.pageY;
 
         const [posX, posY] = mousePositionToCoordinates(x, y, DraggedComponent);
 

@@ -6,7 +6,8 @@ let BoardLastDraggingDistance = {x: 0, y: 0};
 /* --- BOARD ---- */
 
 $('.board-container').on('mousedown', function (e) {
-    if (!$(e.target).hasClass('component')) {
+    if (!$(e.target).hasClass('component') && !IsWiring) {
+      console.log(IsWiring);
       IsDraggingBoard = true;
       BoardDraggingStartCoordinates = {
         x: e.pageX, 
@@ -17,26 +18,58 @@ $('.board-container').on('mousedown', function (e) {
         BoardLastDraggingDistance = {x: 0, y: 0};
       }
     }
-  });
-  
-  $(document).on('mouseup', function (e) {
-      IsDraggingBoard = false;
-      BoardLastDraggingDistance = BoardDraggingDistance;
-  });
-  
-  $(document).on('mousemove', function (e) {
-    if (IsDraggingBoard) {
-      const x = e.pageX;
-      const y = e.pageY;
-      const distanceX = x - BoardDraggingStartCoordinates.x;
-      const distanceY = y - BoardDraggingStartCoordinates.y;
-      BoardDraggingDistance = {
-        x: BoardLastDraggingDistance.x + distanceX, 
-        y: BoardLastDraggingDistance.y + distanceY, 
-      }
-      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px)`);
+});
+
+/* touch */
+$('.board-container').on('touchstart', function (e) {
+  if (!$(e.target).hasClass('component') && !IsWiring) {
+    IsDraggingBoard = true;
+    const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    BoardDraggingStartCoordinates = {
+      x: touch.pageX, 
+      y: touch.pageY
+    };
+
+    if (BoardLastDraggingDistance === undefined) { /* don't know why but it doesn't work without it */
+      BoardLastDraggingDistance = {x: 0, y: 0};
     }
-  });
+  }
+});
+  
+$(document).on('mouseup touchend', function (e) {
+    IsDraggingBoard = false;
+    BoardLastDraggingDistance = BoardDraggingDistance;
+});
+
+$(document).on('mousemove', function (e) {
+  if (IsDraggingBoard && !IsWiring) {
+    const x = e.pageX;
+    const y = e.pageY;
+    const distanceX = x - BoardDraggingStartCoordinates.x;
+    const distanceY = y - BoardDraggingStartCoordinates.y;
+    BoardDraggingDistance = {
+      x: BoardLastDraggingDistance.x + distanceX, 
+      y: BoardLastDraggingDistance.y + distanceY, 
+    }
+    $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px)`);
+  }
+});
+
+/* touch */
+$(document).on('touchmove', function (e) {
+  if (IsDraggingBoard && !IsWiring) {
+    const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    const x = touch.pageX;
+    const y = touch.pageY;
+    const distanceX = x - BoardDraggingStartCoordinates.x;
+    const distanceY = y - BoardDraggingStartCoordinates.y;
+    BoardDraggingDistance = {
+      x: BoardLastDraggingDistance.x + distanceX, 
+      y: BoardLastDraggingDistance.y + distanceY, 
+    }
+    $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px)`);
+  }
+});
   
   /* zooming */
   

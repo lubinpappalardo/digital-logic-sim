@@ -17,7 +17,7 @@ let WiringMouseCoords = {
   y: 0
 }
 
-$(document).on('click', '.out-pins', function (e) {
+$(document).on('mousedown touchstart', '.out-pins', function (e) {
   if (!IsWiring && $(e.target).hasClass('pin')) {
     WiringStartPin = $(e.target).attr('class').split(' ')[1];
     WiringStartComponent = $(e.target).parent().parent().attr('id');
@@ -36,7 +36,18 @@ $(document).mousemove(function (e) {
       y: e.pageY
     }
   }
-});
+})
+
+/* touch */
+$(document).on('touchmove', function (e) {
+  if (IsWiring) {
+    const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    WiringMouseCoords = {
+      x: touch.pageX,
+      y: touch.pageY
+    }
+  }
+})
 
 $(document).on('click', function (e) {
   if (IsWiring && !$(e.target).hasClass('pin')) {
@@ -44,8 +55,40 @@ $(document).on('click', function (e) {
   }
 });
 
-$(document).on('click', '.in-pins', function (e) {
+/* touch */
+$(document).on('touchend', function (e) {
+  const touch = e.originalEvent.changedTouches[0];
+  const endElem = document.elementFromPoint(touch.pageX, touch.pageY);
+  if (IsWiring && !$(endElem).hasClass('pin')) {
+    console.log('cancel');
+    IsWiring = false;
+  } else if (IsWiring) {
+    WiringEndPin = $(endElem).attr('class').split(' ')[1];
+    WiringEndComponent = $(endElem).parent().parent().attr('id');
+    
+    const arrayToOutput = diagram[WiringStartComponent].outputs[WiringStartPin].to;
+    const arrayFromInput = diagram[WiringEndComponent].inputs[WiringEndPin].from;
+    const connectionToOutput = {component: WiringEndComponent, pin: WiringEndPin};
+    const connectionFromOutput = {component: WiringStartComponent, pin: WiringStartPin};
+    const exists = arrayToOutput.find(obj => obj.component === connectionToOutput.component && obj.pin === connectionToOutput.pin) !== undefined;
+
+    if (exists) {
+      return; // prevent from wiring two times to the same input
+    }
+    
+    arrayToOutput.push(connectionToOutput);
+    arrayFromInput.push(connectionFromOutput);
+    IsWiring = false;
+
+    autoSave();
+
+  }
+});
+
+
+$(document).on('mouseup click', '.in-pins', function (e) {
   if (IsWiring && $(e.target).hasClass('pin')) {
+    
     WiringEndPin = $(e.target).attr('class').split(' ')[1];
     WiringEndComponent = $(e.target).parent().parent().attr('id');
     
@@ -64,8 +107,11 @@ $(document).on('click', '.in-pins', function (e) {
     IsWiring = false;
 
     autoSave();
+
   }
 });
+
+
 
 /* Drawing wires */
 
