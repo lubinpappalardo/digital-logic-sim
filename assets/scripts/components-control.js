@@ -35,7 +35,21 @@ $(document).on('click', '.add-component', function (e) {
     const html = components[gate].replace('id=\'\'', `id='component${ComponentCount}'`);
     $('.components').append(html);
 
-    const [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, $(`#component${ComponentCount}`));
+    let [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, $(`#component${ComponentCount}`));
+    let isOverlap = true;
+
+    // loop to prevent added component to overlap and stack on each others
+    while (isOverlap) {
+        isOverlap = false;
+        for (const component in diagram) {
+            // check if the position of the added component is close to an other one
+            if (Math.abs(x - diagram[component].x) < 20 && Math.abs(y - diagram[component].y) < 20) {
+                x += 75;
+                y += 75;
+                isOverlap = true;
+            }
+        }
+    }
     $(`#component${ComponentCount}`).css('left', x + 'px');
     $(`#component${ComponentCount}`).css('top', y + 'px');
 

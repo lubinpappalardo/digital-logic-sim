@@ -29,7 +29,7 @@ function setDiagram() {
     
     const type = $(this).attr('class').split(' ')[1].toUpperCase();
     // const [x, y] = mousePositionToCoordinates(0, 0, $(this));
-    diagram[id] = {type: type, x: 0, y: 0, rotation: 0, inputs: {}, outputs: {}};
+    diagram[id] = {type: type, x: Number($(this).css('left').slice(0, -2)), y: Number($(this).css('top').slice(0, -2)), rotation: 0, inputs: {}, outputs: {}};
     // $(this).css('top', x  + 'px');
     // $(this).css('top', y  + 'px');
 

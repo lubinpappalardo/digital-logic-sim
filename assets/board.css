@@ -42,7 +42,6 @@
     width: var(--width);
     height: calc(6/9 * var(--width)); /* 6/9 is the ration of the image */
     transform-origin: center;
-    /* transform: translate(-50%, -50%); */
     top: 50%;
     left: 50%;
   
@@ -76,11 +75,11 @@
     position: absolute;
     content: "";
     z-index: -10;
-    width: 80%;
-    height: 80%;
-    border-radius: 100px;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
     background-color: var(--accent);
-    filter: blur(30px);
+    filter: blur(40px);
     opacity: 0;
     transition: opacity 0.5s;
   }
