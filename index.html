@@ -25,7 +25,14 @@
   <!--script-->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="assets/scripts/script.js" defer></script>
+  <script src="assets/scripts/components.js" defer></script>
+  <script src="assets/scripts/components-control.js" defer></script>
+  <script src="assets/scripts/board-controls.js" defer></script>
+  <script src="assets/scripts/wires.js" defer></script>
+  <script src="assets/scripts/ui-animations.js" defer></script>
+  <script src="assets/scripts/interpreter.js" defer></script>
   <script src="assets/scripts/cookies.js" defer></script>
+  <script src="assets/scripts/audio-manager.js" defer></script>
 </head>
 
 <body>
@@ -111,7 +118,7 @@
     <section class='clock-options'>
       
       <div id='pauseBtn' onclick="pauseClock()"><span class="google-icon material-symbols-outlined">stop</span><span class='stop-play-alt'>Stop</span></div>
-      <div id='pulseBtn' onclick="process()"><span class="google-icon material-symbols-outlined">skip_next</span>Pulse clock</div>
+      <div id='pulseBtn' onclick="process(); playAudio('pulse');"><span class="google-icon material-symbols-outlined">skip_next</span>Pulse clock</div>
       
     </section>
 
