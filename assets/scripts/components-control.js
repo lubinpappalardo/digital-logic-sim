@@ -64,7 +64,7 @@ function deleteComponent() {
     const id = SelectedComponent.attr('id');
     delete diagram[id];
     SelectedComponent.remove();
-    // playAudio('pop');
+    playAudio('cut.wav');
     setDiagram();
     autoSave();
 };

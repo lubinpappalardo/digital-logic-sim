@@ -10,6 +10,11 @@
     background-size: var(--tileSize) var(--tileSize);
     border: 2px solid var(--tileLight);
     overflow: hidden;
+    cursor: grab;
+  }
+
+  .board-container:active {
+    cursor: grabbing;
   }
   
   .board-container::before {
@@ -27,13 +32,14 @@
     width: 100%;
     height: 100%;
   }
-  
+
   #wires {
     position: absolute;
     width: 100%;
     height: 100%;
   }
-  
+
+
   /* GLOBAL STYLE FOR COMPONENTS */
   
   .component {
@@ -52,14 +58,6 @@
     padding: 10px;
   
     rotate: 0deg;
-  }
-  
-  .component:hover {
-    cursor: grab;
-  }
-  
-  .component:active {
-    cursor: grabbing;
   }
   
   .component::after {

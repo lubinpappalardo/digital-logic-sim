@@ -15,10 +15,10 @@ $(document).on('contextmenu', '.switch', function (e) {
   function activateSwitch(switchComponent) {
     if (switchComponent.hasClass('on')) {
       switchComponent.removeClass('on');
-      playAudio('switch-off');
+      playAudio('switch-off.mp3');
     } else {
       switchComponent.addClass('on');
-      playAudio('switch-on');
+      playAudio('switch-on.mp3');
     }
   } 
   
@@ -56,6 +56,8 @@ $(document).on('contextmenu', '.switch', function (e) {
   function XNOR(a, b) {
     return a ^ b ? 0 : 1;
   }
+
+  let lightAudioPlayed = {};
   
   function process() {
     for (const component in diagram) {
@@ -64,8 +66,14 @@ $(document).on('contextmenu', '.switch', function (e) {
         const inputs = Object.values(diagram[component].inputs).map(input => input.state);
         if (inputs.includes(1)) {
           $(`#${component}`).addClass('on');
+          if (!lightAudioPlayed[component]) {
+            playAudio('electricity.mp3', `audio-${component}`, true);
+            lightAudioPlayed[component] = true;
+          }
         } else {
           $(`#${component}`).removeClass('on');
+          $(`#audio-${component}`).remove();
+          lightAudioPlayed[component] = false;
         }
       }
   
