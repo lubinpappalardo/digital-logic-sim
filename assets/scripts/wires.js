@@ -92,7 +92,7 @@ function GetPinCoord(pin) {
 function draw () {
     paper.width = paper.clientWidth;
     paper.height = paper.clientHeight;
-    pen.lineWidth = 3;
+    pen.lineWidth = 4;
     pen.clearRect(0, 0, paper.width, paper.height);
 
 
