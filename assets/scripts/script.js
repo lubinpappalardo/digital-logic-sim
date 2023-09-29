@@ -202,18 +202,17 @@ function getAllCookies() {
 
   let cookieValues = []; // Array to store cookie values
 
-  
-
+  // loop through all cookies
   for (let i = 0; i < cookies.length; i++) {
-    // make sure the cookie key isn't in the ignored list
     
     let cookie = cookies[i];
     while (cookie.charAt(0) === " ") {
       cookie = cookie.substring(1);
     }
 
+    // make sure the cookie key isn't in the ignored list
     if (ignoredCookies.includes(cookie.split('=')[0])) {
-      break;
+      continue;
     }
 
     const cookieValue = cookie.split("=")[1]; // Get cookie value
