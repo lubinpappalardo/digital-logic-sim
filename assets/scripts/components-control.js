@@ -74,11 +74,13 @@ function deleteComponent() {
 function rotateComponent() {
     const id = SelectedComponent.attr('id');
     let angle = Number(SelectedComponent.css('rotate').slice(0, -3));
-    if (angle === 360) {
+    if (angle >= 360) {
         angle = 0;
     }
-    SelectedComponent.css('rotate', `${angle + 90}deg`);
-    diagram[id].rotation = angle + 90;
+    angle += 90;
+    SelectedComponent.find('.tooltip').css('transform', `translateY(120%) rotate(${360 - angle}deg)`);
+    SelectedComponent.css('rotate', `${angle}deg`);
+    diagram[id].rotation = angle;
     autoSave();
 };
 
