@@ -323,15 +323,13 @@
     opacity: 0;
   }
   
-  .selection-tools button:nth-child(1) {
-    transition: background-color .5s, transform .5s, opacity .5s;
-  }
+  .selection-tools button:nth-child(1) { transition: background-color .5s, transform .5s, opacity .5s; }
   
-  .selection-tools button:nth-child(2) {
-    transition: background-color .5s, transform .5s .1s, opacity .5s .1s;
-  }
+  .selection-tools button:nth-child(2) { transition: background-color .5s, transform .5s .1s, opacity .5s .1s; }
+
+  .selection-tools button:nth-child(3) { transition: background-color .5s, transform .5s .2s, opacity .5s .2s; }
   
-  body:has(.component.selected) .selection-tools button {
+  body:has(.component.selected) .selection-tools button:not(.ignored) {
     transform: translateY(0);
     opacity: 1;
   }

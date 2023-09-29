@@ -16,9 +16,19 @@ $(document).on('mousedown', '.component', function (e) {
         $('.selected').removeClass('selected');
         $(this).addClass('selected');
         SelectedComponent = $(this);
+        if (SelectedComponent.hasClass('switch')) {
+            $('#activateSwitchComponent').removeClass('ignored');
+        } else {
+            $('#activateSwitchComponent').addClass('ignored');
+        }
       }
     }
 });
+
+$('#activateSwitchComponent').click(function (e) {
+    activateSwitch(SelectedComponent);
+})
+
   
 /* unselect on click on void */
 $('#board').on('click', function (e) {
