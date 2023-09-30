@@ -29,6 +29,12 @@ $('#activateSwitchComponent').click(function (e) {
     activateSwitch(SelectedComponent);
 })
 
+$(document).dblclick('.component', function(e) {
+    if (!$(e.target).hasClass('pin') && $(e.target).hasClass('switch')) {
+        activateSwitch($(e.target));
+    }
+})
+
   
 /* unselect on click on void */
 $('#board').on('click', function (e) {
