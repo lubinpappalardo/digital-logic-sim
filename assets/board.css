@@ -271,8 +271,8 @@
   /*---------------- TOOLBARS ----------------*/
   
   .toolbar {
-    position: fixed;
-    z-index: 8888;
+    position: absolute;
+    z-index: 7777;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -316,6 +316,12 @@
     top: calc(var(--tileSize) / 2);
     left: calc(var(--panelSize) + var(--tileSize) / 2);
     transition: top .5s, opacity .5s;
+
+    @media only screen and (max-width: 767px) {
+      & {
+        left: calc(var(--tileSize) / 2); 
+      }
+    }
   }
   
   .selection-tools button {

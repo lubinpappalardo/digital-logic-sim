@@ -12,9 +12,9 @@ let diagram = {};
 
 
 
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-   alert("Looks like your are using a mobile device ! Unfortunately, this website was designed for pc and laptop use only. Indeed, you won't be able to use it properly on your current device.");
-}
+// if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+//    alert("Looks like your are using a mobile device ! Unfortunately, this website was designed for pc and laptop use only. Indeed, you won't be able to use it properly on your current device.");
+// }
 
 
 /* ---- DIAGRAM ---- */

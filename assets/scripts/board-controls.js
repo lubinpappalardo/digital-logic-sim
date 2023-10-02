@@ -105,7 +105,18 @@ $(document).on('touchmove', function (e) {
   
   function resetWorkspace() {
     BoardLastDraggingDistance = {x: 0, y: 0};
-    $('.board-container').css('transform', 'translate(0px, 0px)');
-    $('.board-container').css('scale', '1');
+    $('.board-container').css({'scale': '1', 'transform': 'translate(0px, 0px)', 'transition': 'scale .5s, transform .5s'}).delay(500).queue(function(next) {
+      $(this).css('transition', 'none');
+      next();
+    });
   }
   
+  $('.board-container').dblclick(function(e) {
+    if (!$(e.target).hasClass('switch')) {
+      $('.board-container').css({'scale': '1', 'transition': 'scale .5s'}).delay(500).queue(function(next) {
+        $(this).css('transition', 'none');
+        next();
+      });
+      $('.board-container').css('scale', '1');
+    }
+  });

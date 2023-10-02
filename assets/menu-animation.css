@@ -1,0 +1,118 @@
+:root {
+    --lineHeight: 3px;
+    --triangleHeight: 30px;
+    --closedTriangleHeight: 40px;
+    --triangleWidth: 25px;
+    --wireWidth: calc((var(--triangleHeight) - var(--lineHeight)) / 2);
+    --triangleAngle: 30deg;
+    --btnSize: 70px;
+  }
+  
+  #menu-btn {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: calc(var(--tileSize) / 2);
+    bottom: calc(var(--tileSize) / 2);
+    place-items: center;
+    background-color: var(--accent);
+    width: var(--btnSize);
+    height: var(--btnSize);
+    border-radius: 50%;
+
+    @media only screen and (max-width: 767px) {
+      & {
+        display: grid;
+      }
+    }
+  }
+  
+  #menu-btn-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-45deg);
+    transition: transform 1s;
+    aspect-ratio: 1;
+  }
+  
+  #menu-btn.close #menu-btn-content {
+    transform: rotate(-405deg);
+  }
+  
+  .line {
+    height: var(--lineHeight);
+    background: white;
+    width: var(--wireWidth);
+  }
+  
+  #left-wire {
+     border-radius: 50px 0px 0px 50px;
+     transition: width 1s;
+  }
+  
+  #right-wire {
+     border-radius: 0px 50px 50px 0px;
+     transition: width 1s;
+  }
+  
+  #menu-btn.close #left-wire,
+  #menu-btn.close #right-wire {
+    width: calc((var(--closedTriangleHeight) - var(--lineHeight)) / 2);
+  }
+  
+  #triangle {
+    width: var(--triangleWidth);
+    position: relative;
+    transition: width 1s;
+  /*   border: 1px solid red; */
+  }
+  
+  #triangle .line {
+    border-radius: 50px;
+  }
+  
+  #menu-btn.close #triangle {
+    width: var(--lineHeight);
+  }
+  
+  #left-side-triangle {
+    height: 1000px;
+    max-height: var(--triangleHeight);
+    width: var(--lineHeight);
+    transition: max-height 1s;
+  }
+  
+  #menu-btn.close #left-side-triangle {
+    max-height: var(--closedTriangleHeight);
+  }
+  
+  #top-side-triangle {
+    transform: translateY(calc(var(--lineHeight) / -2)) rotate(var(--triangleAngle));
+    transform-origin: bottom left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--triangleHeight);
+    transition: transform 1s, width 1s;
+  }
+  
+  #bottom-side-triangle {
+    transform: translateY(calc(var(--lineHeight) / 2)) rotate(calc(-1 * var(--triangleAngle)));
+    transform-origin: top left;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: var(--triangleHeight);
+    transition: transform 1s, width 1s;
+  }
+  
+  #menu-btn.close #top-side-triangle {
+    transform: rotate(90deg);
+    width: calc(var(--closedTriangleHeight) / 2);
+  }
+  #menu-btn.close #bottom-side-triangle {
+    transform: rotate(-90deg);
+    width: calc(var(--closedTriangleHeight) / 2);
+  }
+  

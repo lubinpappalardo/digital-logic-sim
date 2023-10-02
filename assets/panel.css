@@ -1,23 +1,38 @@
 /* ---- ---- ---- PANEL ---- ---- ---- */
 
-.panel {
+#panel {
     position: fixed;
     overflow-x: hidden;
     left: 0;
-    height: 100%;
+    top: 0;
+    height: 100vh;
     width: var(--panelSize);
     z-index: 8888;
   
     display: flex;
     flex-direction: column;
     padding: 20px;
+    padding-bottom: 0;
     gap: 20px;
     
     background: var(--backgroundLight);
     border: 2px solid var(--tile);
   
     color: var(--text);
+    
+    transition: transform 1s;
+}
+
+#panel.closed {
+  transform: translateX(-100%);
+}
+
+@media only screen and (max-width: 767px) {
+  #panel {
+    width: 100vw;
   }
+}
+
   
   /* --- Panel section title --- */
   
@@ -53,7 +68,7 @@
   
   /* --- Panel buttons --- */
   
-  .panel button, #loadfile-btn {
+  #panel button, #loadfile-btn {
     position: relative;
     background-color: var(--secondary);
     border: none;
@@ -66,7 +81,7 @@
     background-color: var(--accent);
   }
   
-  .panel button::before, #loadfile-btn::before {
+  #panel button::before, #loadfile-btn::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -82,40 +97,40 @@
     transition: opacity 1s;
   }
   
-  .panel button.danger-btn::before {
+  #panel button.danger-btn::before {
     background-color: var(--primary);
   }
   
-  .panel button:hover, #loadfile-btn:hover {
+  #panel button:hover, #loadfile-btn:hover {
     background-color: var(--secondaryLight);
   }
   
-  .panel button:hover::before, #loadfile-btn:hover::before {
+  #panel button:hover::before, #loadfile-btn:hover::before {
     opacity: 1;
   }
   
-  .panel button.danger-btn {
+  #panel button.danger-btn {
     background-color: var(--primaryLow);
   }
   
-  .panel button:hover.danger-btn {
+  #panel button:hover.danger-btn {
     background-color: var(--primary);
   }
   
   /* --- Sections --- */
   
-  .panel section {
+  #panel section {
     border-radius: 12px;
     background-color: var(--tile);
     justify-content: center;
     align-items: center;
   }
   
-  .panel section:last-child {
+  #panel section:last-child {
     margin-bottom: 400px;
   }
   
-  .panel section:not(.component-library) {
+  #panel section:not(.component-library) {
     display: flex;
   }
   
@@ -252,10 +267,10 @@
   }
   
   @keyframes pulse {
-    0% {scale: 1}
-    50% {scale: 1.1}
-    90% {scale: 0.95}
-    100% {scale: 1}
+    0% { scale: 1 }
+    50% { scale: 1.1 }
+    90% { scale: 0.95 }
+    100% { scale: 1 }
   }
   
   /* Clock frequency */
@@ -414,4 +429,11 @@
     0% {opacity: 0;}
     50% {opacity: 1; }
     100% {opacity: 0; }
+  }
+
+  #panelEndTrigger {
+    border: 1px solid red;
+    width: 1px;
+    height: 1px;
+    margin-top: 20px;
   }
