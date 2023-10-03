@@ -135,8 +135,8 @@ function GetPinCoord(pin) {
 
 
 function draw () {
-    paper.width = paper.clientWidth;
-    paper.height = paper.clientHeight;
+    paper.width = $('#wires').outerWidth();
+    paper.height = $('#wires').outerHeight();
     pen.lineWidth = 4;
     pen.clearRect(0, 0, paper.width, paper.height);
 
