@@ -125,15 +125,22 @@
   }
   
   .pin {
-    background: var(--discreettext);
+    background-color: var(--discreettext);
     width: var(--pinSize);
     height: var(--pinSize);
     border-radius: 50%;
     cursor: pointer;
-  }
-  
-  .pin:hover {
-    background: hsl(0, 0%, 55%);
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: hsl(0, 0%, 55%);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: hsl(0, 0%, 55%);
+      }
+    }
   }
   
   /* CUSTOM STYLE LOGIC GATES */
@@ -306,9 +313,18 @@
     align-items: center;
   }
   
-  .toolbar button:hover, .toolbar button.hover, .zoom-tools span:hover {
-    background-color: var(--tileLight);
+  @media only screen and (min-width: 768px) {
+    .toolbar button:hover, .toolbar button.hover, .zoom-tools span:hover {
+      background-color: var(--tileLight);
+    }
   }
+  @media only screen and (max-width: 767px) {
+    .toolbar button:active, .toolbar button.hover, .zoom-tools span:active {
+      background-color: var(--tileLight);
+    }
+  }
+
+
   
   /*---------------- SELECTION TOOLBAR ----------------*/
   

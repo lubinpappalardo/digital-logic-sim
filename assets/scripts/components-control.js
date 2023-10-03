@@ -34,7 +34,13 @@ $(document).dblclick('.component', function(e) {
     if (!$(e.target).hasClass('pin') && $(e.target).hasClass('switch')) {
         activateSwitch($(e.target));
     }
-})
+});
+
+$(document).on('contextmenu', '.switch', function (e) {
+    if (!$(e.target).hasClass('pin')) { // prevent switch to turn on if it's the pin who has been clicked
+      activateSwitch($(this));
+    }
+});
 
   
 /* unselect on click on void */
@@ -124,27 +130,27 @@ $(document).keydown(function (e) {
             switch (e.which) {
                 // rotate with r
                 case 82: 
-                $('#rotateComponent').addClass('hover').delay(400).queue(function(next) {
-                    $(this).removeClass('hover');
-                    next();
-                });
-                rotateComponent();
-                break;
+                    $('#rotateComponent').addClass('hover').delay(400).queue(function(next) {
+                        $(this).removeClass('hover');
+                        next();
+                    });
+                    rotateComponent();
+                    break;
                 // delete with backspace
                 case 8:
-                $('#deleteComponent').addClass('hover').delay(400).queue(function(next) {
-                    $(this).removeClass('hover');
-                    next();
-                });
-                deleteComponent();
-                break;
+                    $('#deleteComponent').addClass('hover').delay(400).queue(function(next) {
+                        $(this).removeClass('hover');
+                        next();
+                    });
+                    deleteComponent();
+                    break;
                 // activate switch with enter
                 case 13:
                 // check if the selected component is a switch
-                if (SelectedComponent.hasClass('switch')) {
-                    activateSwitch(SelectedComponent);
-                }
-                break;
+                    if (SelectedComponent.hasClass('switch')) {
+                        activateSwitch(SelectedComponent);
+                    }
+                    break;
                 default:
                 break;
             }

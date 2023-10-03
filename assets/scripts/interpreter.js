@@ -5,12 +5,6 @@ let paused = false;
 /* Logic */
 
 /* Switches */
-$(document).on('contextmenu', '.switch', function (e) {
-    if (!$(e.target).hasClass('pin')) { // prevent switch to turn on if it's the pin who has been clicked
-      activateSwitch($(this));
-    }
-  
-  });
   
   function activateSwitch(switchComponent) {
     if (switchComponent.hasClass('on')) {
@@ -20,6 +14,10 @@ $(document).on('contextmenu', '.switch', function (e) {
       switchComponent.addClass('on');
       playAudio('switch-on.mp3');
     }
+    $('#activateSwitchComponent').addClass('hover').delay(400).queue(function(next) {
+      $(this).removeClass('hover');
+      next();
+    });
   } 
   
   function BUFFER(a) {

@@ -75,6 +75,17 @@
     border-radius: 12px;
     padding: 8px 12px;
     transition: background-color .5s;
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--secondaryLight);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--secondaryLight);
+      }
+    }
   }
   
   #loadfile-btn.file-selected {
@@ -95,26 +106,36 @@
     filter: blur(20px);
     opacity: 0;
     transition: opacity 1s;
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        opacity: 1;
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        opacity: 1;
+      }
+    }
   }
   
   #panel button.danger-btn::before {
     background-color: var(--primary);
   }
   
-  #panel button:hover, #loadfile-btn:hover {
-    background-color: var(--secondaryLight);
-  }
-  
-  #panel button:hover::before, #loadfile-btn:hover::before {
-    opacity: 1;
-  }
-  
   #panel button.danger-btn {
     background-color: var(--primaryLow);
-  }
-  
-  #panel button:hover.danger-btn {
-    background-color: var(--primary);
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--primary);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--primary);
+      }
+    }
   }
   
   /* --- Sections --- */
@@ -154,10 +175,17 @@
     font-size: var(--small);
     transition: background-color .2s;
     cursor: pointer;
-  }
-  
-  .component-library span:hover {
-    background-color: var(--tileLight);
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--tileLight);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--tileLight);
+      }
+    }
   }
   
   .component-library img {
@@ -248,6 +276,17 @@
     font-size: var(--small);
     transition: background-color .2s;
     cursor: pointer;
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--tileLight);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--tileLight);
+      }
+    }
   }
   
   .clock-options .google-icon {
@@ -256,10 +295,6 @@
   
   .stop-play-alt {
     font-size: var(--small);
-  }
-  
-  .clock-options div:hover {
-    background-color: var(--tileLight);
   }
   
   #pulseBtn.animate-pulse {
@@ -315,10 +350,17 @@
   
     cursor: pointer;
     transition: background-color .2s;
-  }
-  
-  .clock-frequency div span:hover {
-    background-color: var(--tileLight);
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--tileLight);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--tileLight);
+      }
+    }
   }
   
   .clock-frequency div span:has(input:checked) {
@@ -389,18 +431,32 @@
   
   #clearing-confirmation .clear-accept {
     background-color: var(--tile);
-  }
-  
-  #clearing-confirmation .clear-accept:hover {
-    background-color: var(--tileLight);
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--tileLight);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--tileLight);
+      }
+    }
   }
   
   #clearing-confirmation .clear-deny {
     background-color: var(--warning);
-  }
-  
-  #clearing-confirmation .clear-deny:hover {
-    background-color: var(--warningLight);
+
+    @media only screen and (min-width: 768px) {
+      &:hover {
+        background-color: var(--tileLight);
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      &:active {
+        background-color: var(--tileLight);
+      }
+    }
   }
   
   

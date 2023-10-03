@@ -1,12 +1,14 @@
 #cookies-popup {
-    position: fixed;
+    position: absolute;
     z-index: 9999;
-    top: 10px;
-    right: 10px;
+    --padding: 20px;
+    top: var(--padding);
+    right: var(--padding);
     padding: 18px 32px;
     max-width: 300px;
     background-color: var(--tile);
     opacity: 0;
+    box-shadow: 0 0 20px 0 var(--backgroundLight);
 
     transform: translateX(150%);
     transition: transform 1s, opacity 1s;
