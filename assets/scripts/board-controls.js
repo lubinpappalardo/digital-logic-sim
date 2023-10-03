@@ -113,11 +113,10 @@ $(document).on('touchmove', function (e) {
   
   $('.board-container').dblclick(function(e) {
     if (!$(e.target).hasClass('switch')) {
+      scale = 1;
       $('.board-container').css({'transform': `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(1)`, 'transition': 'scale .5s'}).delay(500).queue(function(next) {
         $(this).css('transition', 'none');
         next();
       });
-      $('.board-container').css('scale', '1');
-      scale = 1;
     }
   });
