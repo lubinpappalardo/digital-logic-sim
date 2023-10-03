@@ -181,6 +181,11 @@ function deleteCookies() {
   }
 }
 
+function deleteCookie(cookieName) {
+  // get the cookie with name = cookieName and delete it
+  document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+}
+
 // get a cookie
 function getCookie(cname) {
   let name = cname + "=";
@@ -224,6 +229,7 @@ function getAllCookies() {
 
 
 function autoSave() {
+  const saves = getAllCookies();
   $('#board-saved').addClass('opened').delay(1000).queue(function(next) {
     $(this).removeClass('opened');
     next();
@@ -232,6 +238,10 @@ function autoSave() {
   let chunks = [];
   for (let i = 0; i < str.length; i += 2500) {
     chunks.push(str.substr(i, 2500));
+  }
+  // delete cookies whose index (saveN with 'N' the index) is above the number of chunks
+  for (let i = chunks.length; i < getAllCookies().length; i++) {
+    deleteCookie(`save ${i}`);
   }
   for (let i = 0; i < chunks.length; i++) {
     setCookie(`save ${i}`, chunks[i]);
@@ -245,11 +255,14 @@ $(document).ready(function() {
   
   if (autosave === "") { return; }
 
-  JsonData = JSON.parse(autosave);
+  try {
+    JsonData = JSON.parse(autosave);
+  } catch (e) {
+    console.log(e);
+    return;
+  }
   
   if (Object.keys(JsonData).length === 0) { return; }  
-
-  // console.log(autosave);
   
   loadDiagram(JsonData);
 });

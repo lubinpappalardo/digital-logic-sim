@@ -95,7 +95,7 @@ function rotateComponent() {
     }
     angle += 90;
     SelectedComponent.find('.tooltip').css('transform', `translateY(120%) rotate(${360 - angle}deg)`);
-    SelectedComponent.css('rotate', `${angle}deg`);
+    SelectedComponent.css('transform', `rotate(${angle}deg)`);
     diagram[id].rotation = angle;
     autoSave();
 };

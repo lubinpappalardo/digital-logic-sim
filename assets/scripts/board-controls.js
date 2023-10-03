@@ -50,7 +50,7 @@ $(document).on('mousemove', function (e) {
       x: BoardLastDraggingDistance.x + distanceX, 
       y: BoardLastDraggingDistance.y + distanceY, 
     }
-    $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px)`);
+    $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${scale})`);
   }
 });
 
@@ -66,7 +66,7 @@ $(document).on('touchmove', function (e) {
       x: BoardLastDraggingDistance.x + distanceX, 
       y: BoardLastDraggingDistance.y + distanceY, 
     }
-    $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px)`);
+    $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${scale})`);
   }
 });
   
@@ -80,7 +80,7 @@ $(document).on('touchmove', function (e) {
     scale += ZoomSensivity;
     scale = Math.round(scale * 10) / 10; // Round to 1 decimal after point
     if (scale > 0.2 && scale < 4) {
-      $('.board-container').css('scale', `${scale}`);
+      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${scale})`);
     }
   }
   
@@ -89,7 +89,7 @@ $(document).on('touchmove', function (e) {
     scale -= ZoomSensivity;
     scale = Math.round(scale * 10) / 10; // Round to 1 decimal after point
     if (scale > 0.2 && scale < 4) {
-      $('.board-container').css('scale', `${scale}`);
+      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${scale})`);
     }
   }
   
@@ -105,7 +105,7 @@ $(document).on('touchmove', function (e) {
   
   function resetWorkspace() {
     BoardLastDraggingDistance = {x: 0, y: 0};
-    $('.board-container').css({'scale': '1', 'transform': 'translate(0px, 0px)', 'transition': 'scale .5s, transform .5s'}).delay(500).queue(function(next) {
+    $('.board-container').css({'transform': 'translate(0px, 0px) scale(1)', 'transition': 'scale .5s, transform .5s'}).delay(500).queue(function(next) {
       $(this).css('transition', 'none');
       next();
     });
@@ -113,7 +113,7 @@ $(document).on('touchmove', function (e) {
   
   $('.board-container').dblclick(function(e) {
     if (!$(e.target).hasClass('switch')) {
-      $('.board-container').css({'scale': '1', 'transition': 'scale .5s'}).delay(500).queue(function(next) {
+      $('.board-container').css({'transform': `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(1)`, 'transition': 'scale .5s'}).delay(500).queue(function(next) {
         $(this).css('transition', 'none');
         next();
       });

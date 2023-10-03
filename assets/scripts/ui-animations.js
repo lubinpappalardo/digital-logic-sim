@@ -124,4 +124,8 @@ document.getElementById('panel').addEventListener('touchend', function(e) {
     scroll();  // Start the animation
 }, false);
 
+window.addEventListener('resize', () => {
+  const browserZoomLevel = Math.round(window.devicePixelRatio * 100);
+  console.log(browserZoomLevel)
+})
 
