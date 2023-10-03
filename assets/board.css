@@ -4,7 +4,7 @@
     position: absolute;
     width: var(--boardSize);
     height: var(--boardSize);
-    scale: 1; /* needed for the zoom functionality*/
+    transform: scale(1); /* needed for the zoom functionality*/
     background-color: var(--background);
     background-image:  linear-gradient(var(--tile) 1px, transparent 1px), linear-gradient(to right, var(--tile) 1px, var(--background) 1px);
     background-size: var(--tileSize) var(--tileSize);

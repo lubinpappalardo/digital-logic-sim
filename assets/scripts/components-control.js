@@ -2,6 +2,7 @@ let IsDraggingComponent = false;
 let DraggedComponent;
 let SelectedComponent = '';
 let SwitchHovered = '';
+let componentRotations = {};
 
 /* ---- COMPONENT --- */
 
@@ -89,11 +90,19 @@ function deleteComponent() {
 
 function rotateComponent() {
     const id = SelectedComponent.attr('id');
-    let angle = Number(SelectedComponent.css('rotate').slice(0, -3));
+    let angle;
+    // check if componentRotations[id] exist
+    if (componentRotations[id] === undefined) {
+        componentRotations[id] = 0;
+        angle = 0;
+    } else {
+        angle = componentRotations[id];
+    } 
     if (angle >= 360) {
         angle = 0;
     }
     angle += 90;
+    componentRotations[id] = angle;
     SelectedComponent.find('.tooltip').css('transform', `translateY(120%) rotate(${360 - angle}deg)`);
     SelectedComponent.css('transform', `rotate(${angle}deg)`);
     diagram[id].rotation = angle;

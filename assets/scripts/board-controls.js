@@ -1,6 +1,6 @@
 let IsDraggingBoard = false;
 let BoardDraggingStartCoordinates;
-let BoardDraggingDistance;
+let BoardDraggingDistance = {x: 0, y: 0};
 let BoardLastDraggingDistance = {x: 0, y: 0};
 
 /* --- BOARD ---- */
@@ -76,7 +76,6 @@ $(document).on('touchmove', function (e) {
   let scale = 1;
   
   function ZoomIn() {
-    scale = parseFloat($('.board-container').css('scale'));
     scale += ZoomSensivity;
     scale = Math.round(scale * 10) / 10; // Round to 1 decimal after point
     if (scale > 0.2 && scale < 4) {
@@ -85,7 +84,6 @@ $(document).on('touchmove', function (e) {
   }
   
   function ZoomOut() {
-    scale = parseFloat($('.board-container').css('scale'));
     scale -= ZoomSensivity;
     scale = Math.round(scale * 10) / 10; // Round to 1 decimal after point
     if (scale > 0.2 && scale < 4) {
