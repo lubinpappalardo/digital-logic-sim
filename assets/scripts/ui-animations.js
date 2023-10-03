@@ -91,3 +91,37 @@ document.addEventListener('mousewheel', function(ev) {
   ev.preventDefault();
 }, { passive: false });
 
+
+
+let startY;
+let lastY;
+let momentum;
+
+document.getElementById('panel').addEventListener('touchstart', function(e) {
+    startY = e.touches[0].clientY;
+    momentum = 0;
+}, false);
+
+document.getElementById('panel').addEventListener('touchmove', function(e) {
+    let touch = e.touches[0];
+    let change = startY - touch.clientY;
+
+    document.getElementById('panel').scrollBy(0, change);
+    startY = touch.clientY;
+
+    momentum = (touch.clientY - lastY);
+    lastY = touch.clientY;
+}, false);
+
+document.getElementById('panel').addEventListener('touchend', function(e) {
+    function scroll() {
+        if (Math.abs(momentum) > 0.1) {
+            document.getElementById('panel').scrollBy(0, -momentum);
+            momentum *= 0.95;  // Reduce the momentum over time
+            requestAnimationFrame(scroll);
+        }
+    }
+    scroll();  // Start the animation
+}, false);
+
+
