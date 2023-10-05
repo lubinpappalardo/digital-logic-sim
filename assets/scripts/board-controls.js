@@ -73,21 +73,23 @@ $(document).on('touchmove', function (e) {
   /* zooming */
   
   const ZoomSensivity = 0.1;
-  let scale = 1;
+  let scale = 1.0;
   
   function ZoomIn() {
-    scale += ZoomSensivity;
-    scale = Math.round(scale * 10) / 10; // Round to 1 decimal after point
-    if (scale > 0.2 && scale < 4) {
-      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${scale})`);
+    let tempScale = scale + ZoomSensivity;
+    tempScale = Math.round(tempScale * 10) / 10; // Round to 1 decimal after point
+    if (tempScale > 0.2 && tempScale < 4) {
+      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${tempScale})`);
+      scale = tempScale;
     }
   }
   
   function ZoomOut() {
-    scale -= ZoomSensivity;
-    scale = Math.round(scale * 10) / 10; // Round to 1 decimal after point
-    if (scale > 0.2 && scale < 4) {
-      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${scale})`);
+    let tempScale = scale - ZoomSensivity;
+    tempScale = Math.round(tempScale * 10) / 10; // Round to 1 decimal after point
+    if (tempScale > 0.2 && tempScale < 4) {
+      $('.board-container').css('transform', `translate(${BoardDraggingDistance.x}px, ${BoardDraggingDistance.y}px) scale(${tempScale})`);
+      scale = tempScale;
     }
   }
   

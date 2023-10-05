@@ -104,7 +104,7 @@ document.getElementById('panel').addEventListener('touchstart', function(e) {
 
 document.getElementById('panel').addEventListener('touchmove', function(e) {
     let touch = e.touches[0];
-    let change = startY - touch.clientY;
+    let change = (startY - touch.clientY) * 0.9;
 
     document.getElementById('panel').scrollBy(0, change);
     startY = touch.clientY;
