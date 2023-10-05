@@ -3,6 +3,8 @@ let DraggedComponent;
 let SelectedComponent = '';
 let SwitchHovered = '';
 let componentRotations = {};
+let IsDraggingNewComponent = false;
+let DraggedNewComponentStartCoords = {};
 
 /* ---- COMPONENT --- */
 
@@ -53,32 +55,23 @@ $('#board').on('click', function (e) {
 
 /* Adding new components */
 
-$(document).on('click', '.add-component', function (e) {
+$(document).on('mousedown', '.add-component', function (e) {
     const gate = $(this).text().trim();
     const html = components[gate].replace('id=\'\'', `id='component${ComponentCount}'`);
     $('.components').append(html);
 
-    let [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, $(`#component${ComponentCount}`));
-    let isOverlap = true;
-
-    // loop to prevent added component to overlap and stack on each others
-    while (isOverlap) {
-        isOverlap = false;
-        for (const component in diagram) {
-            // check if the position of the added component is close to an other one
-            if (Math.abs(x - diagram[component].x) < 20 && Math.abs(y - diagram[component].y) < 20) {
-                x += 75;
-                y += 75;
-                isOverlap = true;
-            }
-        }
-    }
-    $(`#component${ComponentCount}`).css('left', x + 'px');
-    $(`#component${ComponentCount}`).css('top', y + 'px');
+    DraggedComponent = $(`#component${ComponentCount}`);
 
     ComponentCount += 1;
-    setDiagram();
-    autoSave();
+
+    const [x, y] = mousePositionToCoordinates(e.pageX, e.pageY, DraggedComponent);
+    IsDraggingNewComponent = true;
+    DraggedNewComponentStartCoords = {
+        x: x,
+        y: y
+    };
+    DraggedComponent.css('left', x + 'px');
+    DraggedComponent.css('top', y + 'px');
 });
 
 /* Deleting components */
@@ -226,25 +219,67 @@ $(document).on('touchstart', '.component', function (e) {
 
 $(document).on('mouseup touchend', '.component', function (e) {
     IsDraggingComponent = false;
+    if (IsDraggingNewComponent) {
+        setDiagram();
+    }
+    IsDraggingNewComponent = false;
     DraggedComponent = false;
     autoSave();
 });
 
 
+$(document).on('mouseup', function (e) {
+    if (IsDraggingNewComponent) {
+        // if element hasn't been dragged add it to middle;
+        const [posX, posY] = mousePositionToCoordinates(e.pageX, e.pageY, DraggedComponent);
+        // calculate if the elem has been dragged more than 20px
+        if (Math.abs(DraggedNewComponentStartCoords.x - posX) <= 20 && Math.abs(DraggedNewComponentStartCoords.y - posY) <= 20) {
+
+            let [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, DraggedComponent);
+            let isOverlap = true;
+    
+            // loop to prevent added component to overlap and stack on each others
+            while (isOverlap) {
+                isOverlap = false;
+                for (const component in diagram) {
+                    // check if the position of the added component is close to an other one
+                    if (Math.abs(x - diagram[component].x) < 20 && Math.abs(y - diagram[component].y) < 20) {
+                        x += 75;
+                        y += 75;
+                        isOverlap = true;
+                    }
+                }
+            }
+            DraggedComponent.css('left', x + 'px');
+            DraggedComponent.css('top', y + 'px');
+            IsDraggingComponent = false;
+            IsDraggingNewComponent = false;
+            DraggedComponent = false;
+            setDiagram();
+            autoSave();
+        }
+    }
+})
+
+
 $(document).on('mousemove', function (e) {
-    if (IsDraggingComponent) {
+    if (IsDraggingComponent || IsDraggingNewComponent) {
         const x = e.pageX;
         const y = e.pageY;
 
         const [posX, posY] = mousePositionToCoordinates(x, y, DraggedComponent);
 
         if (posY > 0 && posY < BoardSize) {
-        DraggedComponent.css('top', posY  + 'px');
-        diagram[DraggedComponent.attr('id')].y = posY;
+            DraggedComponent.css('top', posY  + 'px');
+            if (!IsDraggingNewComponent) {
+                diagram[DraggedComponent.attr('id')].y = posY;
+            }
         }
         if (posX > 0 && posX < BoardSize) {
-        DraggedComponent.css('left', posX + 'px');
-        diagram[DraggedComponent.attr('id')].x = posX;
+            DraggedComponent.css('left', posX + 'px');
+            if (!IsDraggingNewComponent) {
+                diagram[DraggedComponent.attr('id')].x = posX;
+            }
         }
     }
 });
