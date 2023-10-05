@@ -105,6 +105,11 @@ let paused = false;
           const result = window[diagram[component].type](...inputs);
           // set the output state to the result
           diagram[component].outputs[output].state = result;
+          if (result === 1) {
+            $(`#${component}`).find(`.${output}`).addClass('on');
+          } else {
+            $(`#${component}`).find(`.${output}`).removeClass('on');
+          }
           
           // set the input state of the linked component to the result
           for (const input of diagram[component].outputs[output].to) {
