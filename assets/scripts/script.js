@@ -105,8 +105,8 @@ function save() {
   }
   const filename = `${name}.json`;
   const content = jsonData;
-
-  const blob = new Blob([content], { type: 'text/plain' });
+  
+  const blob = new Blob([content], { type: 'application/json' });
   const url = window.URL.createObjectURL(blob);
   
   const link = document.createElement('a');
@@ -118,7 +118,7 @@ function save() {
   setTimeout(() => {
     window.URL.revokeObjectURL(url);
     link.remove();
-  }, 0);
+  }, 0);  
 
 }
 
