@@ -184,11 +184,16 @@ function draw () {
   
             pen.beginPath();
             pen.moveTo(start.x, start.y);
-            pen.lineTo(end.x - (Math.abs(start.x - end.x) / 2), start.y);
-            pen.lineTo(end.x - (Math.abs(start.x - end.x) / 2), end.y);
+            if (end.x > start.x) {
+              pen.lineTo(end.x - (Math.abs(start.x - end.x) / 2), start.y);
+              pen.lineTo(end.x - (Math.abs(start.x - end.x) / 2), end.y);
+            } else {
+              pen.lineTo(start.x, end.y - (Math.abs(start.y - end.y) / 2));
+              pen.lineTo(end.x, end.y - (Math.abs(start.y - end.y) / 2));
+            }
             pen.lineTo(end.x, end.y);
             pen.stroke();
-
+            
           }
         }
       }
