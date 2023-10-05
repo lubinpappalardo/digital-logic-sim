@@ -98,11 +98,18 @@ let lastY;
 let momentum;
 
 document.getElementById('panel').addEventListener('touchstart', function(e) {
+    if (!isMobile) {
+        return;
+    }
+    lastY = e.touches[0].clientY;
     startY = e.touches[0].clientY;
     momentum = 0;
 }, false);
 
 document.getElementById('panel').addEventListener('touchmove', function(e) {
+    if (!isMobile) {
+      return;
+    }
     let touch = e.touches[0];
     let change = (startY - touch.clientY) * 0.9;
 
@@ -114,6 +121,9 @@ document.getElementById('panel').addEventListener('touchmove', function(e) {
 }, false);
 
 document.getElementById('panel').addEventListener('touchend', function(e) {
+    if (!isMobile) {
+      return;
+    }
     function scroll() {
         if (Math.abs(momentum) > 0.1) {
             document.getElementById('panel').scrollBy(0, -momentum);
