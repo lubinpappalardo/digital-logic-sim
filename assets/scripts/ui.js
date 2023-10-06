@@ -133,3 +133,43 @@ document.getElementById('panel').addEventListener('touchend', function(e) {
     }
     scroll();  // Start the animation
 }, false);
+
+
+let pinchStartDist = 0;
+let pinchEndDist = 0;
+let isPinching = false;
+
+$(document).on('touchstart', function(e) {
+    if (e.originalEvent.touches.length === 2 && isMobile) {
+        startDist = Math.hypot(
+            e.originalEvent.touches[0].pageX - e.originalEvent.touches[1].pageX,
+            e.originalEvent.touches[0].pageY - e.originalEvent.touches[1].pageY
+        );
+        isPinching = true;
+    }
+});
+
+$(document).on('touchmove', function(e) {
+    if (e.originalEvent.touches.length === 2 && isPinching) {
+        endDist = Math.hypot(
+            e.originalEvent.touches[0].pageX - e.originalEvent.touches[1].pageX,
+            e.originalEvent.touches[0].pageY - e.originalEvent.touches[1].pageY
+        );
+        if (startDist > 50 && endDist > 50) {
+          if (endDist > startDist) {
+            ZoomIn();
+          } else if (endDist < startDist) {
+            ZoomOut();
+          }
+          startDist = endDist;
+      }
+    }
+});
+
+$(document).on('touchend', function(e) {
+    if (isPinching) {
+        startDist = 0;
+        endDist = 0;
+        isPinching = false;
+    }
+});
