@@ -82,6 +82,7 @@ $(document).on('mousedown touchstart', '.add-component', function (e) {
 function deleteComponent() {
     const id = SelectedComponent.attr('id');
     delete diagram[id];
+    $(`#audio-${id}`).remove();
     SelectedComponent.remove();
     playAudio('cut.wav');
     setDiagram();

@@ -11,3 +11,9 @@ function playAudio(audioName, id='', loop=false) {
     }
 
 }
+
+function clearAllAudio() {
+    $('audio').each(function() {
+        $(this).remove();
+    });
+}

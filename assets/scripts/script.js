@@ -57,6 +57,7 @@ function clearBoard() {
   diagram = {};
   ComponentCount = 0;
   $('#loadDiagram').val('');
+  clearAllAudio();
   resetWorkspace();
   setDiagram();
   deleteCookies();
