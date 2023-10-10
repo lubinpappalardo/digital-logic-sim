@@ -252,6 +252,10 @@
     padding: 0;
     touch-action: auto;
     width: auto;
+
+    &:hover, &:active {
+      border: 2px solid var(--tileLight);
+    }
   }
 
   .text input {
@@ -264,7 +268,6 @@
     text-align: center;
     width: auto;
     height: 100%;
-
   }
   
   .buffer::after {
