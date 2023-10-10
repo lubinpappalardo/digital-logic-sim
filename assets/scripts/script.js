@@ -27,10 +27,11 @@ function setDiagram() {
     }
     
     const type = $(this).attr('class').split(' ')[1].toUpperCase();
-    // const [x, y] = mousePositionToCoordinates(0, 0, $(this));
     diagram[id] = {type: type, x: Number($(this).css('left').slice(0, -2)), y: Number($(this).css('top').slice(0, -2)), rotation: 0, inputs: {}, outputs: {}};
-    // $(this).css('top', x  + 'px');
-    // $(this).css('top', y  + 'px');
+    // add an other key for text elements to store the value
+    if (type === 'TEXT') {
+      diagram[id].text = $(this).find('input').val();
+    }
 
     // for each output pin
     $(this).find('.out-pins').find('.pin').each(function() {
@@ -229,7 +230,12 @@ function getAllCookies() {
 }
 
 
+// autosave work
 function autoSave() {
+
+  // reset cookies
+  deleteCookies();
+
   const saves = getAllCookies();
   $('#board-saved').addClass('opened').delay(1000).queue(function(next) {
     $(this).removeClass('opened');
@@ -271,7 +277,7 @@ $(document).ready(function() {
 
 function loadDiagram(JsonData) {
 
-  if (!paused) {
+  if (!paused) { // pause the clock while everything is loading
     pauseClock();
   }
   
@@ -284,6 +290,9 @@ function loadDiagram(JsonData) {
     $(`#${component}`).css('left', JsonData[component].x)
     $(`#${component}`).css('top', JsonData[component].y)
     $(`#${component}`).css('rotate', `${JsonData[component].rotation}deg`);
+    if (type === 'TEXT') { // set stored text value for text elements
+      $(`#${component} input`).val(JsonData[component].text);
+    }
     ComponentCount = component;
   }
 
@@ -295,7 +304,7 @@ function loadDiagram(JsonData) {
 
   if (paused) {
     pauseClock();
-  }
+  } // resume the clock
 
   autoSave();
 }

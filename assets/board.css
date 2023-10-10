@@ -246,6 +246,26 @@
   
   
   /* Logic gates */
+
+  .component.text {
+    display: flex;
+    padding: 0;
+    touch-action: auto;
+    width: auto;
+  }
+
+  .text input {
+    outline: none;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    font-size: var(--title);
+    padding: 5px;
+    text-align: center;
+    width: auto;
+    height: 100%;
+
+  }
   
   .buffer::after {
     background-image: url('elements/BUFFER.svg');

@@ -173,3 +173,38 @@ $(document).on('touchend', function(e) {
         isPinching = false;
     }
 });
+
+let IsWriting = false;
+let WrittenComponent = '';
+
+$(document).on('dblclick', '.text', function () {
+  $(this).find('input').focus();
+  IsWriting = true;
+  WrittenComponent = $(this);
+});
+
+function resizeInput() {
+  $('.selected').removeClass('selected');
+  SelectedComponent = '';
+  $(this).attr('size', $(this).val().length > 0 ? $(this).val().length : 1);
+}
+
+$('.board-container').click(function() {
+  if (IsWriting) {
+    IsWriting = false;
+    if (WrittenComponent.find('input').val().length <= 0) {
+      deleteComponent(WrittenComponent);
+    } else {
+      diagram[WrittenComponent.attr('id')].text = WrittenComponent.find('input').val();
+    }
+    WrittenComponent = '';
+    autoSave();
+  }
+});
+
+
+$(document).on('keydown', 'input[type="text"]', resizeInput);
+
+$(document).ready(function() {
+  $('.components').find('input[type="text"]').each(resizeInput);
+})

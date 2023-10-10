@@ -79,11 +79,16 @@ $(document).on('mousedown touchstart', '.add-component', function (e) {
 
 
 /* Deleting components */
-function deleteComponent() {
-    const id = SelectedComponent.attr('id');
+function deleteComponent(elem = undefined) {
+    let id;
+    if (elem === undefined) {
+        id = SelectedComponent.attr('id');
+    } else {
+        id = elem.attr('id');
+    }
     delete diagram[id];
     $(`#audio-${id}`).remove();
-    SelectedComponent.remove();
+    $(`#${id}`).remove();
     playAudio('cut.wav');
     setDiagram();
     autoSave();
@@ -127,6 +132,11 @@ $(document).on('mousedown touchstart', '.component', function (e) {
 $(document).on('mouseup touchend', '.component', function (e) {
     IsDraggingComponent = false;
     if (IsDraggingNewComponent) {
+        if (DraggedComponent.hasClass('text')) {
+            DraggedComponent.find('input').focus();
+            IsWriting = true;
+            WrittenComponent = DraggedComponent;
+        }    
         setDiagram();
     }
     IsDraggingNewComponent = false;
@@ -154,6 +164,13 @@ $('#panel').on('mouseup touchend', function (e) {
                 }
             }
         }
+
+        if (DraggedComponent.hasClass('text')) {
+            DraggedComponent.find('input').focus();
+            IsWriting = true;
+            WrittenComponent = DraggedComponent;
+        }
+
         DraggedComponent.css('left', x + 'px');
         DraggedComponent.css('top', y + 'px');
         IsDraggingComponent = false;
@@ -208,7 +225,6 @@ function mousePositionToCoordinates(x, y, component) {
 
     return [posX, posY];
 }
-
 
 
 // keyboard shortcuts

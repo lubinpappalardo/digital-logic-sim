@@ -1,4 +1,9 @@
 const components = {
+    TEXT: `
+  <div class='component text' id=''>
+    <input type='text' class='input' size='1'/>
+  </div>
+    `,
     LIGHT: `
   <div class='component light' id=''>
     <div class='in-pins'>
