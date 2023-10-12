@@ -2,7 +2,7 @@
 Lubin Pappalardo's official Digital Logic Simulator.
 
 Have you ever wondered… how such tiny electronics devices are able to create complex calculations out of simply electricity ? How 0 and 1s can calculate in milliseconds operations that would require hours if not days of work for the average man ?
-Digital Logic Sim is an open-source website whose goal is for you to learn and experiment with the logic that makes computers “computers”, from the latin “computare” which can be translated to “count” or “reckon together”. You can manipulate logic gates and try combinations to create more and more complex components. It may be used for anyone learning electronics, or just curious about how your pc functions.
+Digital Logic Sim is an open-source website whose goal is for you to learn and experiment with the logic that makes computers “computers” (from the latin “computare” which can be translated to “count” or “reckon together”). You can manipulate logic gates and try combinations to create more and more complex components. It may be used for anyone learning electronics, or just curious about how your pc functions.
 
 The project started at the end of July 2023 when I got interested in Digital Logic from a youtube series by the youtuber Sebastian Lague. I then got the idea of making a simulator thinking it would be a great way to level up my coding skills, which it did.
 
