@@ -176,7 +176,7 @@ function deleteCookies() {
       cookie = cookie.substring(1);
     }
     if (ignoredCookies.includes(cookie.split('=')[0])) {
-      break;
+      continue;
     }
     const cookieName = cookie.split("=")[0];
     document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";

@@ -41,7 +41,7 @@
 
   --boardSize: 8000px;
 
-  --panelSize: max(320px, 18%);
+  --panelSize: max(320px, 15%);
 }
 
 html {
