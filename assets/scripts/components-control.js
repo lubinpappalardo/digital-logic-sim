@@ -4,6 +4,7 @@ let SelectedComponent = '';
 let SwitchHovered = '';
 let componentRotations = {};
 let IsDraggingNewComponent = false;
+let NewComponentDelay = false;
 
 /* ---- COMPONENT --- */
 
@@ -52,32 +53,6 @@ $('#board').on('click', function (e) {
 });
 
 
-/* Adding new components */
-$(document).on('mousedown touchstart', '.add-component', function (e) {
-    const gate = $(this).text().trim();
-    const html = components[gate].replace('id=\'\'', `id='component${ComponentCount}'`);
-    $('.components').append(html);
-
-    DraggedComponent = $(`#component${ComponentCount}`);
-
-    ComponentCount += 1;
-
-    let x, y;
-    if (e.type === 'touchstart') {
-        const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-        x = touch.pageX;
-        y = touch.pageY;
-    } else {
-        x = e.pageX;
-        y = e.pageY;
-    }
-    const [posX, posY] = mousePositionToCoordinates(x, y, DraggedComponent);
-    IsDraggingNewComponent = true;
-    DraggedComponent.css('left', posX + 'px');
-    DraggedComponent.css('top', posY + 'px');
-});
-
-
 /* Deleting components */
 function deleteComponent(elem = undefined) {
     let id;
@@ -117,6 +92,7 @@ function rotateComponent() {
     autoSave();
 };
 
+
 /* Dragging components */
 
 $(document).on('mousedown touchstart', '.component', function (e) {
@@ -129,57 +105,42 @@ $(document).on('mousedown touchstart', '.component', function (e) {
     }
 });
 
-$(document).on('mouseup touchend', '.component', function (e) {
-    IsDraggingComponent = false;
-    if (IsDraggingNewComponent) {
-        if (DraggedComponent.hasClass('text')) {
-            DraggedComponent.find('input').focus();
-            IsWriting = true;
-            WrittenComponent = DraggedComponent;
-        }    
-        setDiagram();
+
+/* Adding new components */
+$(document).on('mousedown touchstart', '.add-component', function (e) {
+    if (IsDraggingComponent || IsDraggingNewComponent) {
+        return;
     }
-    IsDraggingNewComponent = false;
-    DraggedComponent = false;
-    autoSave();
+    if (NewComponentDelay) {
+        return;
+    }
+    const gate = $(this).text().trim();
+    const html = components[gate].replace('id=\'\'', `id='component${ComponentCount}'`);
+    $('.components').append(html);
+
+    DraggedComponent = $(`#component${ComponentCount}`);
+
+    ComponentCount += 1;
+
+    let x, y;
+    if (e.type === 'touchstart') {
+        const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+        x = touch.pageX;
+        y = touch.pageY;
+    } else {
+        x = e.pageX;
+        y = e.pageY;
+    }
+    const [posX, posY] = mousePositionToCoordinates(x, y, DraggedComponent);
+    IsDraggingNewComponent = true;
+    DraggedComponent.css('left', posX + 'px');
+    DraggedComponent.css('top', posY + 'px');
+
+    NewComponentDelay = true;
+    setTimeout(() => {
+        NewComponentDelay = false;
+    }, 250)
 });
-
-
-$('#panel').on('mouseup touchend', function (e) {
-    if (IsDraggingNewComponent) {
-    // if element hasn't been dragged add it to middle;
-
-        let [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, DraggedComponent);
-        let isOverlap = true;
-
-        // loop to prevent added component to overlap and stack on each others
-        while (isOverlap) {
-            isOverlap = false;
-            for (const component in diagram) {
-                // check if the position of the added component is close to an other one
-                if (Math.abs(x - diagram[component].x) < 20 && Math.abs(y - diagram[component].y) < 20) {
-                    x += 75;
-                    y += 75;
-                    isOverlap = true;
-                }
-            }
-        }
-
-        if (DraggedComponent.hasClass('text')) {
-            DraggedComponent.find('input').focus();
-            IsWriting = true;
-            WrittenComponent = DraggedComponent;
-        }
-
-        DraggedComponent.css('left', x + 'px');
-        DraggedComponent.css('top', y + 'px');
-        IsDraggingComponent = false;
-        IsDraggingNewComponent = false;
-        DraggedComponent = false;
-        setDiagram();
-        autoSave();
-    }
-})
 
 
 $(document).on('mousemove touchmove', function (e) {
@@ -212,6 +173,71 @@ $(document).on('mousemove touchmove', function (e) {
     }
 });
 
+
+$('#panel').on('mouseup touchend', function (e) {
+    if (IsDraggingNewComponent) {
+        console.log('end 1');
+
+        // const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+        // const touch_x = touch.pageX;
+        // const touch_y = touch.pageY;
+        // // get element at coordinates
+        // const element = document.elementFromPoint(touch_x, touch_y);
+        // // check if the target element at touch position is a child of #panel
+        // if (!element.closest('#panel').lenght) {
+        //     return;
+        // }
+
+        // if element hasn't been dragged add it to middle;
+        let [x, y] = mousePositionToCoordinates($(window).width() / 2, $(window).height() / 2, DraggedComponent);
+        let isOverlap = true;
+
+        // loop to prevent added component to overlap and stack on each others
+        while (isOverlap) {
+            isOverlap = false;
+            for (const component in diagram) {
+                // check if the position of the added component is close to an other one
+                if (Math.abs(x - diagram[component].x) < 20 && Math.abs(y - diagram[component].y) < 20) {
+                    x += 75;
+                    y += 75;
+                    isOverlap = true;
+                }
+            }
+        }
+
+        if (DraggedComponent.hasClass('text')) {
+            DraggedComponent.find('input').focus();
+            IsWriting = true;
+            WrittenComponent = DraggedComponent;
+        }
+
+        DraggedComponent.css('left', x + 'px');
+        DraggedComponent.css('top', y + 'px');
+        IsDraggingComponent = false;
+        IsDraggingNewComponent = false;
+        DraggedComponent = false;
+        setDiagram();
+        autoSave();
+    }
+})
+
+$(document).on('mouseup touchend', '.component', function (e) {
+    console.log('end 2');
+    IsDraggingComponent = false;
+    if (IsDraggingNewComponent) {
+        if (DraggedComponent.hasClass('text')) {
+            DraggedComponent.find('input').focus();
+            IsWriting = true;
+            WrittenComponent = DraggedComponent;
+        }    
+        setDiagram();
+    }
+    IsDraggingNewComponent = false;
+    DraggedComponent = false;
+    autoSave();
+});
+
+
 function mousePositionToCoordinates(x, y, component) {
     const container = document.getElementById('board'); 
     const containerRect = container.getBoundingClientRect();
@@ -225,6 +251,9 @@ function mousePositionToCoordinates(x, y, component) {
 
     return [posX, posY];
 }
+
+
+
 
 
 // keyboard shortcuts
