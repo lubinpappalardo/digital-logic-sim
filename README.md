@@ -12,4 +12,4 @@ Everything was made by myself from moving the workspace around to the actual log
 There are still a lot of things I would like to add to this project, such as circuit embedding for example. This is why I wouldn’t say the app is complete, there’s always room for improvement.
 
 
-https://lubinpappalardo.github.io/digital-logic-sim/
+https://digital-logic-sim.com/
